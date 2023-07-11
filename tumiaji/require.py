@@ -2,31 +2,30 @@ import importlib.util
 import sys
 from types import ModuleType
 from pathlib import Path
-from typing import Final
 
 
-def require(path: str, name: str = "random_name"):
+def require(file_name: str, path: str, module_name: str = "random_name"):
     """
-    my_var = require("../path/from/variables.py")
+    my_module = require(__file__, "../../home/admin/Desktop/test.py")
+    print(my_module.x)
 
-    print(my_var.x) #=> 983
+    ######################## With sambura ###################################
 
-    print(my_var.y) #=> 32,66
-
-    ########################With Sambura###################################
-
-    with Sambura(require("../path/from/variables.py")): import x as var_1, y as var_2
+    with sambura(require(__file__, "../path/from/variables.py")): import x as var_1, y as var_2
 
     print(var_1) #=> 983
 
     print(var_2) #=> 32,66
 
     """
-    DIR: Final[Path] = Path(path).resolve()
-    spec_loc = importlib.util.spec_from_file_location(name, DIR)
+    fname = Path(file_name).resolve()
+    directory = Path(fname.parent, path).resolve()
+
+    # print(directory)
+    spec_loc = importlib.util.spec_from_file_location(module_name, directory)
     module = importlib.util.module_from_spec(spec_loc)
-    sys.modules[name] = module
+    sys.modules[module_name] = module
     spec_loc.loader.exec_module(module)
-    success: ModuleType = __import__(name, globals(), locals(), ["*"], 0)
-    del sys.modules[name]
-    return success
+    imported: ModuleType = __import__(module_name, globals(), locals(), ["*"], 0)
+    del sys.modules[module_name]
+    return imported
