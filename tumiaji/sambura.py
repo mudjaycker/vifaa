@@ -29,7 +29,7 @@ class sambura:
     def __enter__(self):
         if not isinstance(self.dico, dict):
             self.dico = self.dico.__dict__
-            
+
         temp_dict = {
             str(k).replace(" ", "_").replace("-", "_"): v for k, v in self.dico.items()
         }
