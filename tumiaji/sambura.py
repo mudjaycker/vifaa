@@ -1,16 +1,17 @@
 import sys
+from typing import Any
 
 
 class sambura:
-    def __init__(self, dico: dict):
+    def __init__(self, dico: dict[Any, Any]):
         """
         user = {
-            
-            "name of user": "john", 
 
-            "f_name": "Doe", 
+            "name of user": "john",
 
-            "age": 26, 
+            "f_name": "Doe",
+
+            "age": 26,
 
             "47th zone": "USA"
 
@@ -28,16 +29,20 @@ class sambura:
     def __enter__(self):
         if not isinstance(self.dico, dict):
             self.dico = self.dico.__dict__
-
-        self.dico = {
-            **{str(k).replace(" ", "_"): v for k, v in self.dico.items()},
-            **{
-                "_" + str(k).replace(" ","_"): v
-                for k, v in self.dico.items()
-                if str(k).isnumeric() or str(k)[0].isdigit()
-            },
+            
+        temp_dict = {
+            str(k).replace(" ", "_").replace("-", "_"): v for k, v in self.dico.items()
         }
+        temp_dict2 = {}
+        for k, v in temp_dict.items():
+            if str(k)[0].isdigit():
+                k = "_" + str(k)
+                temp_dict2[k] = v
+            else:
+                temp_dict2[k] = v
 
+        self.dico = temp_dict2
+        del temp_dict, temp_dict2
         self.sysmodules = sys.modules
         sys.modules = self.dico
         return sys.modules
