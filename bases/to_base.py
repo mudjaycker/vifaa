@@ -1,4 +1,6 @@
 from const import numbers_map
+
+
 def to_base(number: int, base: int = 2) -> str:
     tab = []
     temp = number
