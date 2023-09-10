@@ -17,6 +17,6 @@ def to_base(number: int, base: int = 2) -> str:
     return result
 
 
-number = 27
-print(to_base(number, 16))  # /=> 1B
-print(to_base(number, 2))  # /=> 11011
+# number = 27
+# print(to_base(number, 16))  # /=> 1B
+# print(to_base(number, 2))  # /=> 11011
