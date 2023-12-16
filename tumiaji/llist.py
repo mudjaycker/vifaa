@@ -27,6 +27,18 @@ class ArrayDict(list):
                 new_items[key].append(value)
         return new_items  
     
+    def push(self, *values):
+        
+        for v in values:
+            if self.unique_key and  self.__has_key(v):
+                raise ValueError(f"Unicity Error '{self.unique_key}={v.get(self.unique_key)}' already exists")
+            
+            if len(self.items) == self.limit:
+                self.items.append(v)
+                del self.items[0]
+                
+            else:
+                self.items.append(v)
     
     def order_by(self, lookup:str):
         new_items = []
