@@ -46,6 +46,21 @@ class ArrayDict(list):
         return new_items
 
 x = [{"name": "BUTOYI", "age": 17}, {"name": "MARYIMANA", "age": 16}, {"name": "MARYIMANA", "age": 19}]
+    def group_by(self, callback):
+        new_items = {}
+        def inner(lookup):
+            for dic in self.items:
+                value = dic.get(lookup)
+                if value:
+                    new_key = callback(dic[lookup])
+                    if new_key not in new_items.keys():
+                        new_items.update({new_key: [dic]})
+                    else:
+                        new_items[new_key].append(dic)
+            return new_items
+        return inner
+x = [{"name": "BUTOYI", "age": 17}, {"name": "MARYIMANA", "age": 16},]
+#{"name": "MARYIMANA", "age": 19}
 
 # x1 = ListOfDict(x).group_by("age")
 # print(x1)
