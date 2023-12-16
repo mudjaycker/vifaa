@@ -25,37 +25,8 @@ class ArrayDict(list):
             value = dic.get(key)
             if value:
                 new_items[key].append(value)
-        return new_items
+        return new_items  
     
-    def simple_group_by(self, key):
-        new_items = {}
-        value = None
-        for d in self.items:
-            value = d.get(key)
-            if value:
-                if value not in new_items.keys():
-                    new_items.update({value: [d]})
-                else:
-                    new_items[value].append(d)
-        return new_items
-    
-    def complex_group_by(self, lookup, callback):
-        new_items = {}
-        for dic in self.items:
-            value = dic.get(lookup)
-            if value:
-                new_key = callback(dic[lookup])
-                if new_key not in new_items.keys():
-                    new_items.update({new_key: [dic]})
-                else:
-                    new_items[new_key].append(dic)
-        return new_items
-    
-    def group_by(self,lookup,callback=None):
-        if callback:
-            return self.complex_group_by(lookup, callback)
-        else:
-            return self.simple_group_by(lookup)
     
     def order_by(self, lookup:str):
         new_items = []
