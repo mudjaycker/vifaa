@@ -56,7 +56,6 @@ class ArrayDict(list):
                     new_items.append(dic)
         return new_items
 
-x = [{"name": "BUTOYI", "age": 17}, {"name": "MARYIMANA", "age": 16}, {"name": "MARYIMANA", "age": 19}]
     def group_by(self, callback):
         new_items = {}
         def inner(lookup):
@@ -73,10 +72,8 @@ x = [{"name": "BUTOYI", "age": 17}, {"name": "MARYIMANA", "age": 16}, {"name": "
 x = [{"name": "BUTOYI", "age": 17}, {"name": "MARYIMANA", "age": 16},]
 #{"name": "MARYIMANA", "age": 19}
 
-# x1 = ListOfDict(x).group_by("age")
-# print(x1)
-# x2 = ListOfDict(x).group_by("name", lambda name: "long"if  len(name) > 6 else "short")
-# print(x2)
-x3 = ListOfDict(x).order_by("age")
-print(x3)
-            
+
+mylist = ArrayDict(x, unique_key="age", limit=4)
+mylist.push({"name": "MARYIMANAs", "age":12}, {"name": "MARYIMANAsu", "age":13}, {"name": "MARYIMANAsu", "age":15})
+print(mylist.items)
+# x2 = mylist.group_by(lambda name: "long_name"if  len(name) > 6 else "short_name")       
