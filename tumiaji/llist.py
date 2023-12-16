@@ -1,21 +1,23 @@
 
-class LList:
-    def __init__(self, limit:int, items:list=[]) -> None:
+    
+from typing import Any
+
+
+class ArrayDict(list):
+    def __init__(self, items: list[dict] = [], limit: int = None, unique_key=None) -> None:
         self.items = items
         self.limit = limit
-        
-    def push(self, value):
-        if len(self.items) == self.limit:
-            self.items.insert(0, value)
-            self.items.pop()
-        else:
-            self.items.insert(0, value)
+        self.unique_key = unique_key
+        super(ArrayDict, self).__init__(self.items)
+   
+    def __has_key(self, values: str):
+        bool_tab = []
+        for item in  self.items:
+            bool_tab.append(values[self.unique_key] in item.values())
+        return True in bool_tab
     
-
-
-class ListOfDict:
-    def __init__(self, items: list[dict]) -> None:
-        self.items = items
+    def __setattr__(self, __name: str, __value: Any) -> None:
+        return super().__setattr__(__name, __value)    
    
     def get(self, key: str):
         new_items = {key: []}
