@@ -3,7 +3,7 @@ from typing import Any
 
 
 class ArrayDict(list):
-    def __init__(self, items: list[dict] = [], limit: int = None, unique_key=None) -> None:
+    def __init__(self, items: list[dict|Any] = [], limit: int = None, unique_key=None) -> None:
         self.items = items
         self.limit = limit
         self.unique_key = unique_key
@@ -69,11 +69,14 @@ class ArrayDict(list):
                         new_items[new_key].append(dic)
             return new_items
         return inner
-x = [{"name": "BUTOYI", "age": 17}, {"name": "MARYIMANA", "age": 16},]
-#{"name": "MARYIMANA", "age": 19}
+    
+    
+if __name__ == "__main__":
+    x = [{"name": "BUTOYI", "age": 17}, {"name": "MARYIMANA", "age": 16},]
+    #{"name": "MARYIMANA", "age": 19}
 
 
-mylist = ArrayDict(x, unique_key="age", limit=4)
-mylist.push({"name": "MARYIMANAs", "age":12}, {"name": "MARYIMANAsu", "age":13}, {"name": "MARYIMANAsu", "age":15})
-print(mylist.items)
-# x2 = mylist.group_by(lambda name: "long_name"if  len(name) > 6 else "short_name")       
+    mylist = ArrayDict(x, unique_key="age", limit=4)
+    mylist.push({"name": "MARYIMANAs", "age":12}, {"name": "MARYIMANAsu", "age":13}, {"name": "MARYIMANAsu", "age":15})
+    print(mylist.items)
+    # x2 = mylist.group_by(lambda name: "long_name"if  len(name) > 6 else "short_name")       
