@@ -1,9 +1,10 @@
 
 from typing import Any
+from pprint import pprint
 
 
 class ArrayDict(list):
-    def __init__(self, items: list[dict|Any] = [], limit: int = None, unique_key=None) -> None:
+    def __init__(self, items: list[dict] = [], limit: int = None, unique_key=None) -> None:
         self.items = items
         self.limit = limit
         self.unique_key = unique_key
@@ -56,27 +57,27 @@ class ArrayDict(list):
                     new_items.append(dic)
         return new_items
 
-    def group_by(self, callback):
+    def group_by(self, lookup:str, callback):
         new_items = {}
-        def inner(lookup):
-            for dic in self.items:
-                value = dic.get(lookup)
-                if value:
-                    new_key = callback(dic[lookup])
-                    if new_key not in new_items.keys():
-                        new_items.update({new_key: [dic]})
-                    else:
-                        new_items[new_key].append(dic)
-            return new_items
-        return inner
+        for dic in self.items:
+            value = dic.get(lookup)
+            if value:
+                new_key = callback(dic[lookup])
+                if new_key not in new_items.keys():
+                    new_items.update({new_key: [dic]})
+                else:
+                    new_items[new_key].append(dic)
+        return new_items
     
     
 if __name__ == "__main__":
-    x = [{"name": "BUTOYI", "age": 17}, {"name": "MARYIMANA", "age": 16},]
+    x = [{"name": "BUTOYI", "age": 17}, {"name": "MARYIMANA", "age": 13},]
     #{"name": "MARYIMANA", "age": 19}
 
 
     mylist = ArrayDict(x, unique_key="age", limit=4)
-    mylist.push({"name": "MARYIMANAs", "age":12}, {"name": "MARYIMANAsu", "age":13}, {"name": "MARYIMANAsu", "age":15})
-    print(mylist.items)
-    # x2 = mylist.group_by(lambda name: "long_name"if  len(name) > 6 else "short_name")       
+    mylist.push({"name": "MARYIMANAs", "age":12}, {"name": "MARYIMANAsu", "age":18}, {"name": "MARY", "age":15})
+    # print(mylist.items)
+    x2 = mylist.group_by("name", lambda name: "long_name"if  len(name) > 6 else "short_name")
+    pprint(mylist.items)
+    print(x2)

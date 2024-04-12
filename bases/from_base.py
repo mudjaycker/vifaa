@@ -1,4 +1,4 @@
-from const import numbers_map
+from consts import numbers_map
 
 inverted_map = {v: k for k, v in numbers_map.items()}
 

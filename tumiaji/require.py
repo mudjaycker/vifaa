@@ -1,4 +1,5 @@
 import importlib.util
+from importlib import import_module
 import sys
 from types import ModuleType
 from pathlib import Path
@@ -21,11 +22,11 @@ def require(file_name: str, path: str, module_name: str = "random_name"):
     fname = Path(file_name).resolve()
     directory = Path(fname.parent, path).resolve()
 
-    # print(directory)
     spec_loc = importlib.util.spec_from_file_location(module_name, directory)
     module = importlib.util.module_from_spec(spec_loc)
     sys.modules[module_name] = module
     spec_loc.loader.exec_module(module)
-    imported: ModuleType = __import__(module_name, globals(), locals(), ["*"], 0)
+    # imported: ModuleType = __import__(module_name, globals(), locals(), ["*"], 0) #not advised by python documentation
+    imported: ModuleType = import_module(module_name)
     del sys.modules[module_name]
     return imported

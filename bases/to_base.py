@@ -1,4 +1,4 @@
-from const import numbers_map
+from consts import numbers_map
 
 
 def to_base(number: int, base: int = 2) -> str:
