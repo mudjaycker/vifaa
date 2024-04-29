@@ -67,6 +67,7 @@ class ArrayDict:
     def group_by(self, callback):
         new_items = {}
         lookup = inspect.getfullargspec(callback).args[0]
+        print(inspect.getfullargspec(callback))
         for dico in self.items:
             value = dico.get(lookup)
             if value:
@@ -75,6 +76,14 @@ class ArrayDict:
                     new_items.update({new_key: [dico]})
                 else:
                     new_items[new_key].append(dico)
+        return new_items
+    
+    def filter(self, callback):
+        lookups = inspect.getfullargspec(callback).args
+        new_items = []
+        for item in self.items:
+            if callback(*[item.get(lookup) for lookup in lookups]):
+                new_items.append(item)
         return new_items
 
 
@@ -85,13 +94,13 @@ if __name__ == "__main__":
     ]
     # {"name": "MARYIMANA", "age": 19}
 
-    mylist = ArrayDict(x, unique_key="age", limit=4, limit_error=True)
+    mylist = ArrayDict(x, unique_key="age", limit=4, limit_error=False)
     mylist.push(
         {"name": "MARYIMANAs", "age": 12},
-        {"name": "MARYIMANAsu", "age": 19},
+        {"name": "GAGA", "age": 19},
         {"name": "MARY", "age": 15},
     )
-    # print(mylist.items)
-    x2 = mylist.group_by(lambda name: "long_name" if len(name) > 6 else "short_name")
-    pprint(mylist.items)
-    print(x2)
+    g = mylist.group_by(lambda name: "long_name" if len(name) > 6 else "short_name")
+    print(g)
+    f = mylist.filter(lambda age, name: age > 12 and name.startswith("MARY"))
+    print(f)
