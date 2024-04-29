@@ -1,5 +1,6 @@
 from typing import Any
 from pprint import pprint
+import inspect
 
 
 class ArrayDict(list):
@@ -61,8 +62,9 @@ class ArrayDict(list):
                     new_items.append(dic)
         return new_items
 
-    def group_by(self, lookup: str, callback):
+    def group_by(self, callback):
         new_items = {}
+        lookup = inspect.getfullargspec(callback).args[0]
         for dic in self.items:
             value = dic.get(lookup)
             if value:
@@ -89,7 +91,7 @@ if __name__ == "__main__":
     )
     # print(mylist.items)
     x2 = mylist.group_by(
-        "name", lambda name: "long_name" if len(name) > 6 else "short_name"
+        lambda name: "long_name" if len(name) > 6 else "short_name"
     )
     pprint(mylist.items)
     print(x2)
