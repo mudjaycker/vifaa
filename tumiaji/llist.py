@@ -71,18 +71,22 @@ class ArrayDict:
 
     def __getitems(self, callback):
         lookups = inspect.getfullargspec(callback).args
-        for item in self.items:
+        for index, item in enumerate(self.items):
             if callback(*[item.get(lookup) for lookup in lookups]):
-                yield item
+                yield index, item
 
     def filter(self, callback):
         new_items = []
-        for item in self.__getitems(callback):
+        for _, item in self.__getitems(callback):
             new_items.append(item)
         return new_items
 
     def get(self, callback):
-        return [next(self.__getitems(callback))]
+        return [next(self.__getitems(callback))[1]]
+    
+    def delete(self, callback):
+        for i,_ in self.__getitems(callback):
+            del self.items[i]
 
 
 if __name__ == "__main__":
@@ -106,3 +110,6 @@ if __name__ == "__main__":
 
     gotten = mylist.get(lambda age, name: age > 12 and name.startswith("MARY"))
     print(gotten)
+    
+    mylist.delete(lambda age, name: age > 12 and name.startswith("MARY"))
+    print(mylist.items)
