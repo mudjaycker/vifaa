@@ -70,22 +70,20 @@ class ArrayDict:
                     new_items[new_key].append(dico)
         return new_items
     
-    def filter(self, callback):
+    def __getitems(self, callback):
         lookups = inspect.getfullargspec(callback).args
-        new_items = []
         for item in self.items:
             if callback(*[item.get(lookup) for lookup in lookups]):
-                new_items.append(item)
+               yield item
+
+    def filter(self, callback):
+        new_items = []
+        for item in self.__getitems(callback):
+            new_items.append(item)
         return new_items
     
     def get(self, callback):
-        lookups = inspect.getfullargspec(callback).args
-        new_items = []
-        for item in self.items:
-            if callback(*[item.get(lookup) for lookup in lookups]):
-                new_items.append(item)
-                break
-        return new_items
+        return [next(self.__getitems(callback))]
 
 
 if __name__ == "__main__":
