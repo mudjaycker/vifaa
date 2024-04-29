@@ -67,7 +67,6 @@ class ArrayDict:
     def group_by(self, callback):
         new_items = {}
         lookup = inspect.getfullargspec(callback).args[0]
-        print(inspect.getfullargspec(callback))
         for dico in self.items:
             value = dico.get(lookup)
             if value:
