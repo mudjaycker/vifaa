@@ -3,23 +3,19 @@ from pprint import pprint
 import inspect
 
 
-class ArrayDict(list):
+class ArrayDict:
     def __init__(
         self, items: list[dict] = [], limit: int = None, unique_key=None
     ) -> None:
         self.items = items
         self.limit = limit
         self.unique_key = unique_key
-        super(ArrayDict, self).__init__(self.items)
 
     def __has_key(self, values: str):
         bool_tab = []
         for item in self.items:
             bool_tab.append(values[self.unique_key] in item.values())
         return True in bool_tab
-
-    def __setattr__(self, __name: str, __value: Any) -> None:
-        return super().__setattr__(__name, __value)
 
     def get(self, key: str):
         new_items = {key: []}
@@ -93,5 +89,5 @@ if __name__ == "__main__":
     x2 = mylist.group_by(
         lambda name: "long_name" if len(name) > 6 else "short_name"
     )
-    pprint(mylist.items)
+    pprint(mylist)
     print(x2)
