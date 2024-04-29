@@ -17,10 +17,8 @@ class ArrayDict:
         self.limit_error = limit_error
 
     def __has_value(self, values: str):
-        bool_tab = []
         for item in self.items:
-            bool_tab.append(values[self.unique_key] in item.values())
-        return True in bool_tab
+            return values[self.unique_key] in item.values()
 
     def push(self, *values):
         for v in values:
