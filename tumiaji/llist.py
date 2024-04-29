@@ -107,5 +107,5 @@ if __name__ == "__main__":
     filtered = mylist.filter(lambda age, name: age > 12 and name.startswith("MARY"))
     print(filtered)
     
-    got = mylist.get(lambda age, name: age > 12 and name.startswith("MARY"))
-    print(got)
+    gotten = mylist.get(lambda age, name: age > 12 and name.startswith("MARY"))
+    print(gotten)
