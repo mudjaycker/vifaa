@@ -24,8 +24,8 @@ class ArrayDict:
 
     def get(self, key: str):
         new_items = {key: []}
-        for dic in self.items:
-            value = dic.get(key)
+        for dico in self.items:
+            value = dico.get(key)
             if value:
                 new_items[key].append(value)
         return new_items
@@ -49,8 +49,8 @@ class ArrayDict:
         new_items = []
         sorted_values = []
         key = lookup.replace("-", "")
-        for dic in self.items:
-            value = dic.get(key)
+        for dico in self.items:
+            value = dico.get(key)
             if value:
                 sorted_values.append(value)
 
@@ -59,9 +59,9 @@ class ArrayDict:
             reversed(sorted_values) if lookup.startswith("-") else sorted_values
         )
         for val in sorted_values:
-            for dic in self.items:
-                if val == dic[key]:
-                    new_items.append(dic)
+            for dico in self.items:
+                if val == dico[key]:
+                    new_items.append(dico)
         return new_items
 
     def group_by(self, callback):
