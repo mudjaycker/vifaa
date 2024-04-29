@@ -11,7 +11,7 @@ class ArrayDict:
         self.limit = limit
         self.unique_key = unique_key
 
-    def __has_key(self, values: str):
+    def __has_value(self, values: str):
         bool_tab = []
         for item in self.items:
             bool_tab.append(values[self.unique_key] in item.values())
@@ -27,7 +27,7 @@ class ArrayDict:
 
     def push(self, *values):
         for v in values:
-            if self.unique_key and self.__has_key(v):
+            if self.unique_key and self.__has_value(v):
                 raise ValueError(
                     f"Unicity Error '{self.unique_key}={v.get(self.unique_key)}' already exists"
                 )
