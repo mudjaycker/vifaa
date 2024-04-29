@@ -5,11 +5,16 @@ import inspect
 
 class ArrayDict:
     def __init__(
-        self, items: list[dict] = [], limit: int = None, unique_key=None
+        self,
+        items: list[dict] = [],
+        limit: int = None,
+        unique_key=None,
+        limit_error=False,
     ) -> None:
         self.items = items
         self.limit = limit
         self.unique_key = unique_key
+        self.limit_error = limit_error
 
     def __has_value(self, values: str):
         bool_tab = []
@@ -31,13 +36,17 @@ class ArrayDict:
                 raise ValueError(
                     f"Unicity Error '{self.unique_key}={v.get(self.unique_key)}' already exists"
                 )
-
             if len(self.items) == self.limit:
+                if self.limit_error:
+                    raise Exception(
+                        f"LimitErrorException: expected under {self.limit} values but got {len(self.items)}"
+                    )
                 self.items.append(v)
                 del self.items[0]
 
             else:
                 self.items.append(v)
+
 
     def order_by(self, lookup: str):
         new_items = []
@@ -86,8 +95,6 @@ if __name__ == "__main__":
         {"name": "MARY", "age": 15},
     )
     # print(mylist.items)
-    x2 = mylist.group_by(
-        lambda name: "long_name" if len(name) > 6 else "short_name"
-    )
-    pprint(mylist)
+    x2 = mylist.group_by(lambda name: "long_name" if len(name) > 6 else "short_name")
+    pprint(mylist.items)
     print(x2)
