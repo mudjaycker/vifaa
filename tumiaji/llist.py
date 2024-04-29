@@ -67,14 +67,14 @@ class ArrayDict:
     def group_by(self, callback):
         new_items = {}
         lookup = inspect.getfullargspec(callback).args[0]
-        for dic in self.items:
-            value = dic.get(lookup)
+        for dico in self.items:
+            value = dico.get(lookup)
             if value:
-                new_key = callback(dic[lookup])
+                new_key = callback(dico[lookup])
                 if new_key not in new_items.keys():
-                    new_items.update({new_key: [dic]})
+                    new_items.update({new_key: [dico]})
                 else:
-                    new_items[new_key].append(dic)
+                    new_items[new_key].append(dico)
         return new_items
 
 
