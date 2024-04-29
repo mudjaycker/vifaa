@@ -34,19 +34,16 @@ class ArrayDict:
         for v in values:
             if self.unique_key and self.__has_value(v):
                 raise ValueError(
-                    f"Unicity Error '{self.unique_key}={v.get(self.unique_key)}' already exists"
+                    f"'{self.unique_key}={v.get(self.unique_key)}' already exists"
                 )
             if len(self.items) == self.limit:
                 if self.limit_error:
-                    raise Exception(
-                        f"LimitErrorException: expected under {self.limit} values but got {len(self.items)}"
-                    )
+                    raise IndexError(f"Cannot contain more than {self.limit} values")
                 self.items.append(v)
                 del self.items[0]
 
             else:
                 self.items.append(v)
-
 
     def order_by(self, lookup: str):
         new_items = []
@@ -88,10 +85,10 @@ if __name__ == "__main__":
     ]
     # {"name": "MARYIMANA", "age": 19}
 
-    mylist = ArrayDict(x, unique_key="age", limit=4)
+    mylist = ArrayDict(x, unique_key="age", limit=4, limit_error=True)
     mylist.push(
         {"name": "MARYIMANAs", "age": 12},
-        {"name": "MARYIMANAsu", "age": 18},
+        {"name": "MARYIMANAsu", "age": 19},
         {"name": "MARY", "age": 15},
     )
     # print(mylist.items)
