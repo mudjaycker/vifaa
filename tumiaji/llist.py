@@ -22,7 +22,6 @@ class ArrayDict:
             bool_tab.append(values[self.unique_key] in item.values())
         return True in bool_tab
 
-
     def push(self, *values):
         for v in values:
             if self.unique_key and self.__has_value(v):
@@ -69,19 +68,19 @@ class ArrayDict:
                 else:
                     new_items[new_key].append(dico)
         return new_items
-    
+
     def __getitems(self, callback):
         lookups = inspect.getfullargspec(callback).args
         for item in self.items:
             if callback(*[item.get(lookup) for lookup in lookups]):
-               yield item
+                yield item
 
     def filter(self, callback):
         new_items = []
         for item in self.__getitems(callback):
             new_items.append(item)
         return new_items
-    
+
     def get(self, callback):
         return [next(self.__getitems(callback))]
 
@@ -101,9 +100,9 @@ if __name__ == "__main__":
     )
     group = mylist.group_by(lambda name: "long_name" if len(name) > 6 else "short_name")
     print(group)
-    
+
     filtered = mylist.filter(lambda age, name: age > 12 and name.startswith("MARY"))
     print(filtered)
-    
+
     gotten = mylist.get(lambda age, name: age > 12 and name.startswith("MARY"))
     print(gotten)
