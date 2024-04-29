@@ -83,9 +83,9 @@ class ArrayDict:
 
     def get(self, callback):
         return [next(self.__getitems(callback))[1]]
-    
+
     def delete(self, callback):
-        for i,_ in self.__getitems(callback):
+        for i, _ in self.__getitems(callback):
             del self.items[i]
 
 
@@ -110,6 +110,6 @@ if __name__ == "__main__":
 
     gotten = mylist.get(lambda age, name: age > 12 and name.startswith("MARY"))
     print(gotten)
-    
+
     mylist.delete(lambda age, name: age > 12 and name.startswith("MARY"))
     print(mylist.items)
