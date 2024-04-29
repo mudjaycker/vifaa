@@ -22,13 +22,6 @@ class ArrayDict:
             bool_tab.append(values[self.unique_key] in item.values())
         return True in bool_tab
 
-    def get(self, key: str):
-        new_items = {key: []}
-        for dico in self.items:
-            value = dico.get(key)
-            if value:
-                new_items[key].append(value)
-        return new_items
 
     def push(self, *values):
         for v in values:
@@ -84,6 +77,15 @@ class ArrayDict:
             if callback(*[item.get(lookup) for lookup in lookups]):
                 new_items.append(item)
         return new_items
+    
+    def get(self, callback):
+        lookups = inspect.getfullargspec(callback).args
+        new_items = []
+        for item in self.items:
+            if callback(*[item.get(lookup) for lookup in lookups]):
+                new_items.append(item)
+                break
+        return new_items
 
 
 if __name__ == "__main__":
@@ -99,7 +101,11 @@ if __name__ == "__main__":
         {"name": "GAGA", "age": 19},
         {"name": "MARY", "age": 15},
     )
-    g = mylist.group_by(lambda name: "long_name" if len(name) > 6 else "short_name")
-    print(g)
-    f = mylist.filter(lambda age, name: age > 12 and name.startswith("MARY"))
-    print(f)
+    group = mylist.group_by(lambda name: "long_name" if len(name) > 6 else "short_name")
+    print(group)
+    
+    filtered = mylist.filter(lambda age, name: age > 12 and name.startswith("MARY"))
+    print(filtered)
+    
+    got = mylist.get(lambda age, name: age > 12 and name.startswith("MARY"))
+    print(got)
