@@ -54,19 +54,20 @@ class Largue:
         self.prerun()
         if not self.cmds:
             raise SyntaxError(f"Command not found, {self.parsed}")
-
-        for setting in self.cmd_settings:
-            for v in self.cmds.values():
-                setting["function"](v or [])
-            break
+        
+        current = None
+        for k, v in self.cmds.items():
+           setting = list(filter(lambda x: x["name"]==k, self.cmd_settings))
+           setting = setting[0]
+           setting["function"](v)
 
 
 cmd = Largue()
 cmd.larguify(
-    lambda x: print(x),
+    lambda x: print(x+"b"),
     ["--toto", "-s"],
     name="toto",
 )
-cmd.larguify(lambda x: print(x), ["--tata", "-t"], name="tata")
+cmd.larguify(lambda x: print(x+"a"), ["--tata", "-t"], name="tata")
 cmd.run()
-print(cmd.cmds)
+print(cmd.parsed)
