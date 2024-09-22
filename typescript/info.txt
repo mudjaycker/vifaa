@@ -1,0 +1,1 @@
+Use the bun's js runtime so that you don't have to compile ts files
