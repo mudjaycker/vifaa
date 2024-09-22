@@ -1,59 +1,72 @@
 import sys
+from typing import Optional
 
 
 class Largue:
-    def __init__(self, name: str):
-        self.name = name
+    def __init__(self, name: Optional[str] = None):
+        self.cmd_name = name
         self.commands: dict = {}
-        self.parsed_args = sys.argv[1:]
-        self.cmd_settings = {}
-        
-        
+        self.parsed = sys.argv[1:]
+        self.cmd_settings = []
 
     def larguify(
         self,
         function,
         args: list[str],
-        help: str,
-        default,
+        name: str,
         required: bool = False,
-        has_values: bool = False
     ):
+        args_dict = {
+            "function": function,
+            "args": args,
+            "name": name,
+            required: required,
+        }
 
-        args_dict = {"function": function, default: default, "args": args, "help": help, required: required, "has_values": has_values}
-        
-        self.cmd_settings.update({args[0]: args_dict}) 
-        
+        self.cmd_settings.append(args_dict)
+
         return self
-    
-    def run(self,):
+
+    def prerun(
+        self,
+    ):
         def next_args(x):
-            tab = []
-            if x < len(self.parsed_args) - 1:
-                n_ind = x + 1 
-                inds = self.parsed_args[n_ind:]
-                for y in inds:
-                    if y not in self.cmd_settings:
-                        tab.append(y)
-                    else:
-                        break
-            return tab
-            
+            if x < len(self.parsed) - 1:
+                n_ind = x + 1
+                if (self.parsed[n_ind]) == "=":
+                    n_ind += 1
+                return self.parsed[n_ind]
+
         map_ = {}
-        for i,arg in enumerate(self.parsed_args):
-            curr_arg = arg if arg  in self.cmd_settings else None
-            
-            if curr_arg and next_args:
-                map_[curr_arg] = next_args(i)
+        for i, arg in enumerate(self.parsed):
+            for setting in self.cmd_settings:
+                condition1 = arg in setting["args"] and self.cmd_name == self.parsed[0]
+                condition2 = self.cmd_name == None and arg in setting["args"]
+                condition = condition1 or condition2
 
-        for k, v in map_.items():
-            self.cmd_settings[k]["function"](*v)
-                        
-        
+                if condition and arg:
+                    # if next_ := next_args(i):
+                    map_.update({setting["name"]: next_args(i)})
+
+        self.cmds = map_
+
+    def run(self):
+        self.prerun()
+        if not self.cmds:
+            raise SyntaxError(f"Command not found, {self.parsed}")
+
+        for setting in self.cmd_settings:
+            for v in self.cmds.values():
+                setting["function"](v or [])
+            break
 
 
-cmd = Largue("test")
-cmd.larguify(lambda *x: print(x), ["testify"], "helping", lambda : print("ok"), has_values=True)
-cmd.larguify(lambda *x: print(x), ["testifions"], "helping", lambda : print("ok"), has_values=True)
-# cmd.larguify(lambda x: print(x), ["o"], "helping", lambda : print("ok"), has_values=True)
+cmd = Largue()
+cmd.larguify(
+    lambda x: print(x),
+    ["--toto", "-s"],
+    name="toto",
+)
+cmd.larguify(lambda x: print(x), ["--tata", "-t"], name="tata")
 cmd.run()
+print(cmd.cmds)
