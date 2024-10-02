@@ -1,6 +1,6 @@
 import NUM_MAP from "./consts";
 
-const INVERTED_MAP = new Map();
+const INVERTED_MAP: Map<string, number> = new Map();
 
 for (let data of NUM_MAP) {
   INVERTED_MAP.set(data[1], data[0]);
@@ -17,6 +17,7 @@ function from_base(number_: string, base: number = 2): number {
     let v = number_list[i];
     let char = INVERTED_MAP.get(v);
 
+    //@ts-ignore
     result += char * Math.pow(base, i);
   }
 

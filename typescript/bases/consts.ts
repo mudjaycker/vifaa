@@ -27,7 +27,7 @@ const letters = [
   "Z",
 ];
 
-let NUM_MAP = new Map();
+let NUM_MAP: Map<number, string> = new Map();
 
 for (let i = 0; i < 10; i++) {
   NUM_MAP.set(i, JSON.stringify(i));
