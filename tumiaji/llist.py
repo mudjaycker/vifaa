@@ -1,9 +1,11 @@
 from typing import Any
-from pprint import pprint
+import json
 import inspect
 
 
 class ArrayDict:
+    """test"""
+
     def __init__(
         self,
         items: list[dict] = [],
@@ -86,6 +88,10 @@ class ArrayDict:
         for i, _ in self.__getitems(callback):
             del self.items[i]
 
+    def print(self, items: list[dict] | dict):
+        formated = json.dumps(items, indent=2)
+        print(formated)
+
 
 if __name__ == "__main__":
     x = [
@@ -94,20 +100,24 @@ if __name__ == "__main__":
     ]
     # {"name": "MARYIMANA", "age": 19}
 
-    mylist = ArrayDict(x, unique_key="age", limit=4, limit_error=False)
+    mylist = ArrayDict(x, unique_key="age", limit=4, limit_error=True)
     mylist.push(
         {"name": "MARYIMANAs", "age": 12},
-        {"name": "GAGA", "age": 19},
-        {"name": "MARY", "age": 15},
+        {"name": "GAGA", "age": 16},
+        # {"name": "MARY", "age": 15},
     )
     group = mylist.group_by(lambda name: "long_name" if len(name) > 6 else "short_name")
-    print(group)
+    print("Group:")
+    mylist.print(group)
 
     filtered = mylist.filter(lambda age, name: age > 12 and name.startswith("MARY"))
-    print(filtered)
+    print("\nFiltered:")
+    mylist.print(filtered)
 
     gotten = mylist.get(lambda age, name: age > 12 and name.startswith("MARY"))
-    print(gotten)
+    print("\nGotten:")
+    mylist.print(gotten)
 
     mylist.delete(lambda age, name: age > 12 and name.startswith("MARY"))
-    print(mylist.items)
+    print("\nRemoved:")
+    mylist.print(mylist.items)

@@ -1,13 +1,20 @@
 import sys
-from typing import Optional
+from typing import Optional, Any, TypedDict, Callable
+from threading import Thread
 
+
+class ArgDetails(TypedDict):
+        function: Callable
+        args: list[str]
+        name: str
+        required: bool = False
 
 class Largue:
     def __init__(self, name: Optional[str] = None):
         self.cmd_name = name
         self.commands: dict = {}
         self.parsed = sys.argv[1:]
-        self.cmd_settings = []
+        self.cmd_settings: list[ArgDetails] = []
 
     def larguify(
         self,
@@ -16,11 +23,11 @@ class Largue:
         name: str,
         required: bool = False,
     ):
-        args_dict = {
+        args_dict: ArgDetails = {
             "function": function,
             "args": args,
             "name": name,
-            required: required,
+            "required": required,
         }
 
         self.cmd_settings.append(args_dict)
@@ -45,29 +52,46 @@ class Largue:
                 condition = condition1 or condition2
 
                 if condition and arg:
-                    # if next_ := next_args(i):
                     map_.update({setting["name"]: next_args(i)})
 
         self.cmds = map_
 
     def run(self):
         self.prerun()
-        if not self.cmds:
-            raise SyntaxError(f"Command not found, {self.parsed}")
-        
-        current = None
+        # if not self.cmds:
+            # raise SyntaxError(f"Command not found, {self.parsed}")
+
         for k, v in self.cmds.items():
-           setting = list(filter(lambda x: x["name"]==k, self.cmd_settings))
-           setting = setting[0]
-           setting["function"](v)
+            setting = list(filter(lambda x: x["name"] == k, self.cmd_settings))
+            setting = setting[0]
+            setting["function"](v)
+    
+    def start(self):
+        th = Thread(target=self.run)
+        th.start()
+        # th.join()
 
 
-cmd = Largue()
+cmd = Largue("ion")
 cmd.larguify(
-    lambda x: print(x+"b"),
+    lambda x: print(x + "b"),
     ["--toto", "-s"],
     name="toto",
 )
-cmd.larguify(lambda x: print(x+"a"), ["--tata", "-t"], name="tata")
-cmd.run()
-print(cmd.parsed)
+
+def test_loop(x):
+    import time
+    time.sleep(5)
+    print("Testing", x)
+    
+cmd.larguify(lambda x: print("ion", x + "a"), ["--tata", "-t"], name="tata")
+cmd.start()
+
+cmd2 = Largue("vague")
+cmd2.larguify(lambda x: test_loop(x), ["--xoxo", "-x"], name="xoxo")
+cmd2.larguify(lambda x: print(x), ["--sasa", "-s"], name="sasa")
+cmd2.start()
+print("test")
+
+
+

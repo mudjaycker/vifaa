@@ -15,6 +15,6 @@ function to_base(_number: number, base: number = 2) {
   return result;
 }
 
-// let num = 27;
-// console.log(to_base(num, 16));
-// console.log(to_base(num, 8));
+let num = 27;
+console.log(to_base(num, 16));
+console.log(to_base(num, 8));
