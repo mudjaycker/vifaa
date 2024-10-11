@@ -5,28 +5,35 @@ from types import ModuleType
 from pathlib import Path
 
 
-def require(file_name: str, path: str, module_name: str = "random_name"):
-    """
-    my_module = require(__file__, "../../home/admin/Desktop/test.py")
-    print(my_module.x)
+class Require:
+    def __init__(self, filename: str):
+        """
+        _ = Require(__file__)
+        
+        my_module = _.require("../../home/admin/Desktop/test.py")
+        
+        print(my_module.x)
 
-    ######################## With sambura ###################################
+        ######################## With sambura ###################################
 
-    with sambura(require(__file__, "../path/from/variables.py")): import x as var_1, y as var_2
+        with sambura(_.require("../path/from/variables.py")): import x as var_1, y # type: ignore
 
-    print(var_1) #=> 983
+        print(var_1)
 
-    print(var_2) #=> 32,66
+        print(y)
+        """
+        self.filename = filename
 
-    """
-    fname = Path(file_name).resolve()
-    directory = Path(fname.parent, path).resolve()
+    def require(self, path: str, module_name: str = "random_name"):
 
-    spec_loc = importlib.util.spec_from_file_location(module_name, directory)
-    module = importlib.util.module_from_spec(spec_loc)
-    sys.modules[module_name] = module
-    spec_loc.loader.exec_module(module)
-    # imported: ModuleType = __import__(module_name, globals(), locals(), ["*"], 0) #not advised by python documentation
-    imported: ModuleType = import_module(module_name)
-    del sys.modules[module_name]
-    return imported
+        fname = Path(self.filename).resolve()
+        directory = Path(fname.parent, path).resolve()
+
+        spec_loc = importlib.util.spec_from_file_location(module_name, directory)
+        module = importlib.util.module_from_spec(spec_loc)
+        sys.modules[module_name] = module
+        spec_loc.loader.exec_module(module)
+        # imported: ModuleType = __import__(module_name, globals(), locals(), ["*"], 0) #not advised by python documentation
+        imported: ModuleType = import_module(module_name)
+        del sys.modules[module_name]
+        return imported
