@@ -29,3 +29,10 @@ function choice(iterable: Iterable<any> | ArrayLike<any>) {
   let randIndex = randint(last_index);
   return array[randIndex];
 }
+
+function randrange(from_: number, to: number, step: number) {
+  let range_result = range(from_, to, step);
+  return choice(range_result)
+}
+
+print(randrange(5, 100, 5))
