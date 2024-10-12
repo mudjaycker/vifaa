@@ -1,6 +1,6 @@
 import { range, list, print } from "./collections";
 
-function randint(from_: number = 0, to: number = 0) {
+function randint(from_: number = 0, to: number = 0): number {
   if (to == 0) {
     [from_, to] = [to, from_];
   }
@@ -30,7 +30,11 @@ function choice(iterable: Iterable<any> | ArrayLike<any>) {
   return array[randIndex];
 }
 
-function randrange(from_: number, to: number, step: number) {
+function randrange(
+  from_: number = 0,
+  to: number | null = null,
+  step: number = 1
+): number {
   let range_result = range(from_, to, step);
   return choice(range_result);
 }

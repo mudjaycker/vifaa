@@ -1,5 +1,3 @@
-//@ts-nocheck
-
 const list = Array.from;
 const print = console.log;
 
@@ -25,9 +23,9 @@ function* ival(iterable: Array<any> | Generator<any>) {
   }
 }
 
-function recense(iterable: Array<any> | Generator<any>) {
-  var tempoList = [];
-  var finalList = [];
+function recense(iterable: Iterable<any> | Array<any>) {
+  var tempoList: Array<any> = [];
+  var finalList: Array<any> = [];
 
   for (let a of iterable) {
     if (!tempoList.includes(a)) {
@@ -41,7 +39,7 @@ function recense(iterable: Array<any> | Generator<any>) {
       });
     }
   }
-  tempoList = null;
+  tempoList = [];
   return finalList;
 }
 
