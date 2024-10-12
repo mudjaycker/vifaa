@@ -1,13 +1,14 @@
-import { range, list } from "./collections";
+import { range, list, print } from "./collections";
 
 function randint(from_: number = 0, to: number = 0) {
   if (to == 0) {
     [from_, to] = [to, from_];
   }
-  let multiple = to > 100 ? to : 100;
-  let rand = parseInt(`${Math.random() * multiple}`, 10);
+  let multiple = to > 10 ? to : 10;
+  let rand = Math.ceil(Math.random() * multiple);
   let mod = rand % (to + 1);
   let result = mod;
+
   if (result < from_) {
     for (let i of range(to)) {
       result += i;
