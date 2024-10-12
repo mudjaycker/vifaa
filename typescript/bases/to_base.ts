@@ -9,8 +9,8 @@ function to_base(_number: number, base: number = 2) {
   while (temp > 0) {
     let mod = temp % base;
     temp = parseInt(`${temp / base}`, 10);
-    mod = NUM_MAP.get(mod);
-    result = mod + result;
+    let mod2 = NUM_MAP.get(mod);
+    result = mod2 + result;
   }
   return result;
 }
