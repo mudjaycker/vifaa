@@ -5,9 +5,8 @@ function randint(from_: number = 0, to: number = 0): number {
     [from_, to] = [to, from_];
   }
   let multiple = to > 10 ? to : 10;
-  let rand = Math.ceil(Math.random() * multiple);
-  let mod = rand % (to + 1);
-  let result = mod;
+  let rand = Math.round(Math.random() * multiple);
+  let result = rand % (to + 1);
 
   if (result < from_) {
     for (let i of range(to)) {
