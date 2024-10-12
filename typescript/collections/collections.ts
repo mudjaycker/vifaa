@@ -25,7 +25,6 @@ function* ival(iterable: Array<any> | Generator<any>) {
   }
 }
 
-
 function recense(iterable: Array<any> | Generator<any>) {
   var tempoList = [];
   var finalList = [];
@@ -42,7 +41,7 @@ function recense(iterable: Array<any> | Generator<any>) {
       });
     }
   }
-  tempoList = null
+  tempoList = null;
   return finalList;
 }
 
@@ -57,6 +56,12 @@ function* loop(itterable: Iterable<any> | ArrayLike<any>) {
     yield array[index];
     index++;
   }
+}
+
+function last(iterable: Iterable<any> | ArrayLike<any>) {
+  let array = list(iterable);
+  let last_index = array.length - 1;
+  return array[last_index];
 }
 
 export { range, ival, list, recense, print, loop };
