@@ -47,7 +47,7 @@ function recense(iterable: Array<any> | Generator<any>) {
 
 function* loop(itterable: Iterable<any> | ArrayLike<any>) {
   let index = 0;
-  let array = Array.from(itterable);
+  let array = list(itterable);
   let last_index = array.length - 1;
   while (true) {
     if (index == last_index) {
