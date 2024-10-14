@@ -15,7 +15,7 @@ function* range(
   }
 }
 
-function* ival(iterable: Array<any> | Generator<any>) {
+function* ival(iterable: Iterable<any>) {
   let index = 0;
   for (let value of iterable) {
     yield [index, value];
@@ -23,7 +23,7 @@ function* ival(iterable: Array<any> | Generator<any>) {
   }
 }
 
-function recense(iterable: Iterable<any> | Array<any>) {
+function recense(iterable: Iterable<any>) {
   var tempoList: Array<any> = [];
   var finalList: Array<any> = [];
 
@@ -43,7 +43,7 @@ function recense(iterable: Iterable<any> | Array<any>) {
   return finalList;
 }
 
-function* loop(iterable: Iterable<any> | ArrayLike<any>) {
+function* loop(iterable: Iterable<any>) {
   let index = 0;
   let array = list(iterable);
   let last_index = array.length - 1;
@@ -56,7 +56,7 @@ function* loop(iterable: Iterable<any> | ArrayLike<any>) {
   }
 }
 
-function last(iterable: Iterable<any> | ArrayLike<any>) {
+function last(iterable: Iterable<any>) {
   let array = list(iterable);
   let last_index = array.length - 1;
   return array[last_index];
@@ -81,7 +81,7 @@ function* factorise(x: number) {
   }
 }
 
-function uniquify(items: any[]) {
+function uniquify(items: Iterable<any>) {
   let uniques: any[] = [];
   for (let i of items) {
     if (!uniques.includes(i)) {
