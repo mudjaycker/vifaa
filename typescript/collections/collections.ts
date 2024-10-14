@@ -81,4 +81,14 @@ function* factorise(x: number) {
   }
 }
 
+function uniquify(items: any[]) {
+  let uniques: any[] = [];
+  for (let i of items) {
+    if (!uniques.includes(i)) {
+      uniques.push(i);
+    }
+  }
+  return uniques;
+}
+
 export { range, ival, list, recense, print, loop, last, int, factorise };
