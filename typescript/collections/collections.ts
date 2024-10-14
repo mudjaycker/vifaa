@@ -62,7 +62,7 @@ function last(iterable: Iterable<any> | ArrayLike<any>) {
   return array[last_index];
 }
 
-function int(a: number): number {
+function int(a: number | string): number {
   return parseInt(`${a}`);
 }
 

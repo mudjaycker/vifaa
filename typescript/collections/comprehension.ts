@@ -1,7 +1,7 @@
-import { range } from "./collections";
+import { int, list, range } from "./collections";
 
 function comprehension(params: string) {
-  let range_condition;
+  let range_condition: number[];
   let [operation, loopCondition] = params.split("for");
 
   if (loopCondition.includes("range")) {
@@ -9,7 +9,7 @@ function comprehension(params: string) {
 
     rg = rg.replace(")", "");
     let [_, rg_num] = rg.split("(");
-    range_condition = Array.from(range(Number.parseInt(rg_num)));
+    range_condition = list(range(int(rg_num)));
 
     let code = `
       let list = [];
@@ -38,7 +38,7 @@ function comprehension(params: string) {
     return eval(code);
   }
 }
-let suite = Array.from(range(11));
+let suite = list(range(11));
 let cph = comprehension(`i+1 for( i of  [${suite.filter((x) => x % 2 == 0)}])`);
 // let cph2 = comprehension(`i for( i of  range(106)`);
 console.log(cph);
