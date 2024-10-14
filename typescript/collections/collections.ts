@@ -91,4 +91,4 @@ function uniquify(items: any[]) {
   return uniques;
 }
 
-export { range, ival, list, recense, print, loop, last, int, factorise };
+export { range, ival, list, recense, print, loop, last, int, factorise, uniquify };
