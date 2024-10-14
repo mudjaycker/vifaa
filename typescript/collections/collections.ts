@@ -62,8 +62,8 @@ function last(iterable: Iterable<any> | ArrayLike<any>) {
   return array[last_index];
 }
 
-function divint(a: number, b: number): number {
-  return parseInt(`${a / b}`);
+function int(a: number): number {
+  return parseInt(`${a}`);
 }
 
-export { range, ival, list, recense, print, loop, last, divint };
+export { range, ival, list, recense, print, loop, last, int };
