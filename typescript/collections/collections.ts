@@ -66,4 +66,19 @@ function int(a: number): number {
   return parseInt(`${a}`);
 }
 
-export { range, ival, list, recense, print, loop, last, int };
+function* factorise(x: number) {
+  let i = 0;
+  let j = 0;
+  for (let q of range(x, 1, -1)) {
+    let p = int(x / q);
+    if (x == p * q) {
+      i++;
+      j += 0.5;
+      if (j == int(i / 2)) {
+        yield [p, q];
+      }
+    }
+  }
+}
+
+export { range, ival, list, recense, print, loop, last, int, factorise };
