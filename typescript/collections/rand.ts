@@ -1,4 +1,5 @@
-import { range, list, print } from "./collections";
+import { range, list, print, loop } from "./collections";
+import cpuValues from "./test";
 
 function randint(from_: number = 0, to: number = 0): number {
   if (to == 0) {
@@ -9,7 +10,7 @@ function randint(from_: number = 0, to: number = 0): number {
   let result = rand % (to + 1);
 
   if (result < from_) {
-    for (let i of range(to)) {
+    for (let i of range(to + 1)) {
       result += i;
       if (result > from_) {
         if (result >= to) {
@@ -37,3 +38,30 @@ function randrange(
   let range_result = range(from_, to, step);
   return choice(range_result);
 }
+
+function randint2(from_: number = 0, to: number = 0) {
+  for (let i of loop(range(from_, to + 1))) {
+    let [idle, sysValue] = cpuValues();
+    let randCpu = idle % sysValue;
+    let rand = randCpu % 2 != 0 ? sysValue : idle;
+    let result = rand % (to + 1);
+
+    if (result < from_) {
+      for (let i of range(to + 1)) {
+        result += i;
+        if (result > from_) {
+          if (result >= to) {
+            result = to;
+          }
+          break;
+        }
+      }
+    }
+    return result;
+  }
+}
+/* for (let i of range(100)) {
+  print(randint(12, 100));
+} */
+/* print(randint2(1998, 2060));
+print(`\033[94m=>\033[0m`, randint(1998, 2060)); */

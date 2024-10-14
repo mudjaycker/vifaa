@@ -43,9 +43,9 @@ function recense(iterable: Iterable<any> | Array<any>) {
   return finalList;
 }
 
-function* loop(itterable: Iterable<any> | ArrayLike<any>) {
+function* loop(iterable: Iterable<any> | ArrayLike<any>) {
   let index = 0;
-  let array = list(itterable);
+  let array = list(iterable);
   let last_index = array.length - 1;
   while (true) {
     if (index == last_index) {
@@ -62,4 +62,4 @@ function last(iterable: Iterable<any> | ArrayLike<any>) {
   return array[last_index];
 }
 
-export { range, ival, list, recense, print, loop };
+export { range, ival, list, recense, print, loop, last };
