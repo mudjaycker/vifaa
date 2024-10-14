@@ -23,7 +23,7 @@ function randint(from_: number = 0, to: number = 0): number {
   return result;
 }
 
-function choice(iterable: Iterable<any> | ArrayLike<any>) {
+function choice(iterable: Iterable<any>) {
   let array = list(iterable);
   let last_index = array.length - 1;
   let randIndex = randint(last_index);
