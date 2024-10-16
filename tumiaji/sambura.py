@@ -1,5 +1,6 @@
 import sys
 from typing import Any
+from string import ascii_letters as letters
 
 
 class sambura:
@@ -35,7 +36,8 @@ class sambura:
         }
         temp_dict2 = {}
         for k, v in temp_dict.items():
-            if str(k)[0].isdigit():
+            first = str(k)[0]
+            if first not in letters and first != "_":
                 k = "_" + str(k)
                 temp_dict2[k] = v
             else:
