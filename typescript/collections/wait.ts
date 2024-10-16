@@ -1,5 +1,3 @@
-import { range, print } from "./collections";
-
 function wait(seconds: number) {
   seconds *= 1000;
   let now = () => new Date().getTime();
