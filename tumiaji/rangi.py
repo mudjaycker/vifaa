@@ -1,140 +1,140 @@
+def style(cls, value: int, text: str):
+    return f"\033[{value}m{text}\033[0m"
+
+
 class rangi:
     @classmethod
-    def __style(cls, value: int, text: str):
-        return f"\033[{value}m{text}\033[0m"
-
-    @classmethod
     def cyan2(cls, text: str):
-        return cls.__style(96, text)
+        return style(96, text)
 
     @classmethod
     def purple2(cls, text: str):
-        return cls.__style(95, text)
+        return style(95, text)
 
     @classmethod
     def blue2(cls, text: str):
-        return cls.__style(94, text)
+        return style(94, text)
 
     @classmethod
     def yellow2(cls, text: str):
-        return cls.__style(93, text)
+        return style(93, text)
 
     @classmethod
     def green2(cls, text: str):
-        return cls.__style(92, text)
+        return style(92, text)
 
     @classmethod
     def red2(cls, text: str):
-        return cls.__style(91, text)
+        return style(91, text)
 
     @classmethod
     def grey2(cls, text: str):
-        return cls.__style(91, text)
+        return style(91, text)
 
     @classmethod
     def underline2(cls, text: str):
-        return cls.__style(52, text)
+        return style(52, text)
 
     @classmethod
     def bgwhite2(cls, text: str):
-        return cls.__style(47, text)
+        return style(47, text)
 
     @classmethod
     def bgcyan(cls, text: str):
-        return cls.__style(46, text)
+        return style(46, text)
 
     @classmethod
     def bgpurple(cls, text: str):
-        return cls.__style(45, text)
+        return style(45, text)
 
     @classmethod
     def bgblue(cls, text: str):
-        return cls.__style(44, text)
+        return style(44, text)
 
     @classmethod
     def bgyellow(cls, text: str):
-        return cls.__style(43, text)
+        return style(43, text)
 
     @classmethod
     def bggreen(cls, text: str):
-        return cls.__style(42, text)
+        return style(42, text)
 
     @classmethod
     def bgred(cls, text: str):
-        return cls.__style(41, text)
+        return style(41, text)
 
     @classmethod
     def bggrey(cls, text: str):
-        return cls.__style(40, text)
+        return style(40, text)
 
     @classmethod
     def bold2(cls, text: str):
-        return cls.__style(37, text)
+        return style(37, text)
 
     @classmethod
     def cyan(cls, text: str):
-        return cls.__style(36, text)
+        return style(36, text)
 
     @classmethod
     def purple(cls, text: str):
-        return cls.__style(35, text)
+        return style(35, text)
 
     @classmethod
     def blue(cls, text: str):
-        return cls.__style(34, text)
+        return style(34, text)
 
     @classmethod
     def yellow(cls, text: str):
-        return cls.__style(33, text)
+        return style(33, text)
 
     @classmethod
     def green(cls, text: str):
-        return cls.__style(32, text)
+        return style(32, text)
 
     @classmethod
     def red(cls, text: str):
-        return cls.__style(31, text)
+        return style(31, text)
 
     @classmethod
     def grey(cls, text: str):
-        return cls.__style(30, text)
+        return style(30, text)
 
     @classmethod
     def dunderline(cls, text: str):
-        return cls.__style(21, text)
+        return style(21, text)
 
     @classmethod
     def crossline(cls, text: str):
-        return cls.__style(9, text)
+        return style(9, text)
 
     @classmethod
     def invisible(cls, text: str):
-        return cls.__style(8, text)
+        return style(8, text)
 
     @classmethod
     def bgwhite(cls, text: str):
-        return cls.__style(7, text)
+        return style(7, text)
 
     @classmethod
     def blink2(cls, text: str):
-        return cls.__style(6, text)
+        return style(6, text)
 
     @classmethod
     def blink(cls, text: str):
-        return cls.__style(5, text)
+        return style(5, text)
 
     @classmethod
     def underline(cls, text: str):
-        return cls.__style(4, text)
+        return style(4, text)
 
     @classmethod
     def italic(cls, text: str):
-        return cls.__style(3, text)
+        return style(3, text)
 
     @classmethod
     def lite(cls, text: str):
-        return cls.__style(2, text)
+        return style(2, text)
 
     @classmethod
     def bold(cls, text: str):
-        return cls.__style(1, text)
+        return style(1, text)
