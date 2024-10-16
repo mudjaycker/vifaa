@@ -1,4 +1,4 @@
-import { range, list, print, uniquify } from "./collections";
+import { range, list } from "./collections";
 
 function randint(from_: number = 0, to: number = 0) {
   if (to == 0) {
