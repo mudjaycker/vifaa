@@ -7,8 +7,3 @@ function wait(seconds: number) {
 
   while (now() < duration) {}
 }
-
-for(let i of range(100)) {
-    print(i);
-    wait(1)
-}
