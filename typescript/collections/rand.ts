@@ -26,3 +26,5 @@ function randrange(
   let range_result = range(from_, to, step);
   return choice(range_result);
 }
+
+export { randint, choice, randrange };
