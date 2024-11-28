@@ -1,4 +1,7 @@
-// shttp.ts
+interface DATA_RESPONSE {
+  status: number;
+  value?: object | string;
+}
 class Shttp {
   constructor() {}
   get(url: string, header = {}) {
