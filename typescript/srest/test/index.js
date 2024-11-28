@@ -1,5 +1,5 @@
 // index.ts
-class Shttp {
+class Srest {
   constructor() {
   }
   #mixinRequest(url, method, data) {
@@ -38,7 +38,7 @@ class Shttp {
     return this.#mixinRequest(url, "DELETE" /* delete */, data);
   }
 }
-new Shttp().delete("http://127.0.0.1:5000/", { payload: { name: "Jon Doe deleted" } }).then((e) => {
+new Srest().delete("http://127.0.0.1:5000/", { payload: { name: "Jon Doe deleted" } }).then((e) => {
   console.log(e);
 }).catch((e) => {
   console.log("===>", e);
