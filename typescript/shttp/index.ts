@@ -4,10 +4,12 @@ interface DATA_REQUEST {
     authorization: string;
   };
 }
+
 interface DATA_RESPONSE {
   status: number;
   value?: object | string;
 }
+
 enum methods {
   get = "GET",
   post = "POST",
@@ -15,7 +17,7 @@ enum methods {
   delete = "DELETE",
 }
 //@ts-ignore
-//ignoring ts duplicate name error wich happens because 
+//ignoring ts duplicate name error wich happens because
 //the class in the transpiled file is has the same name with this class
 class Shttp {
   constructor() {}
@@ -70,34 +72,52 @@ class Shttp {
   delete(url: string, data: DATA_REQUEST) {
     return this.#mixinRequest(url, methods.delete, data);
   }
-  }
+}
 
 /*  
-?Test the get method
-new Shttp().get("http://127.0.0.1:5000/").then((e) => {
-    console.log(e);
-  }).catch((e) => {
-    console.log("===>",e);
-  }); */
-
-/* 
-?Test the post method
+?Testing the get method
 new Shttp()
-  .post("http://127.0.0.1:5000/", { data: "John Doe" })
+  .get("http://127.0.0.1:5000/")
   .then((e) => {
     console.log(e);
   })
   .catch((e) => {
     console.log("===>", e);
-  }); */
+  });
+*/
+
+/* 
+?Testing the post method
+new Shttp()
+  .post("http://127.0.0.1:5000/", { payload: { name: "Jon Doe" } })
+  .then((e) => {
+    console.log(e);
+  })
+  .catch((e) => {
+    console.log("===>", e);
+  });
+*/
 
 /*
-  ?Test the put method 
+  ?Testing the put method 
   new Shttp()
-.put("http://127.0.0.1:5000/", { data: "John Doe Updated" })
-.then((e) => {
-    console.log(e);
-})
-.catch((e) => {
-    console.log("===>", e);
-}); */
+    .put("http://127.0.0.1:5000/", { payload: { name: "Jon Doe" } })
+    .then((e) => {
+      console.log(e);
+    })
+    .catch((e) => {
+      console.log("===>", e);
+    });
+  */
+
+/* 
+  ?Testing the delete method 
+  new Shttp()
+    .delete("http://127.0.0.1:5000/", { payload: { name: "Jon Doe deleted" } })
+    .then((e) => {
+      console.log(e);
+    })
+    .catch((e) => {
+      console.log("===>", e);
+    });
+  */
