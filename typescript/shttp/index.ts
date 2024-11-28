@@ -8,6 +8,9 @@ enum methods {
   put = "PUT",
   delete = "DELETE",
 }
+//@ts-ignore
+//ignoring ts duplicate name error wich happens because 
+//the class in the transpiled file is has the same name with this class
 class Shttp {
   constructor() {}
   get(url: string, header = {}) {
