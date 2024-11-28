@@ -13,55 +13,59 @@ enum methods {
 //the class in the transpiled file is has the same name with this class
 class Shttp {
   constructor() {}
-  get(url: string, header = {}) {
-    const REQUEST = new XMLHttpRequest();
-    REQUEST.open("GET", url);
-    return new Promise((resolve, reject) => {
-      REQUEST.onload = () => {
-        if (REQUEST.status >= 200 && REQUEST.status < 300) {
-          resolve(JSON.parse(REQUEST.response));
-        } else {
-          reject(REQUEST);
-        }
-      };
-      REQUEST.send();
-    });
-  }
 
-  post(url: string, data: object, header = {}) {
+  #mixinRequest(
+    url: string,
+    method: methods,
+    data?: DATA_REQUEST
+  ): Promise<DATA_RESPONSE> {
     const REQUEST = new XMLHttpRequest();
-    REQUEST.open("POST", url);
+
+    REQUEST.open(method, url);
     REQUEST.setRequestHeader("Accept", "application/json");
     REQUEST.setRequestHeader("Content-Type", "application/json");
+
+    if (data?.headers?.authorization) {
+      REQUEST.setRequestHeader("Authorization", data.headers.authorization);
+    }
+
     return new Promise((resolve, reject) => {
       REQUEST.onload = () => {
-        if (REQUEST.status >= 200 && REQUEST.status < 300) {
-          resolve(JSON.parse(REQUEST.response));
+        if (REQUEST.status >= 200 && REQUEST.status < 400) {
+          let status = REQUEST.status;
+          let value =
+            method == methods.delete
+              ? REQUEST.statusText
+              : JSON.parse(REQUEST.response);
+
+          resolve({ status, value: value });
         } else {
-          reject(REQUEST);
+          let [status, reason] = [REQUEST.status, REQUEST.statusText];
+          let response = { status, reason };
+          reject(response);
         }
       };
-      REQUEST.send(JSON.stringify(data));
+      method == methods.get || method == methods.delete
+        ? REQUEST.send()
+        : REQUEST.send(JSON.stringify(data?.payload));
     });
+  }
+  get(url: string, data: DATA_REQUEST | undefined = undefined) {
+    return this.#mixinRequest(url, methods.get, data);
+  }
+  post(url: string, data: DATA_REQUEST) {
+    return this.#mixinRequest(url, methods.post, data);
   }
 
-  put(url: string, data: object, header = {}) {
-    const REQUEST = new XMLHttpRequest();
-    REQUEST.open("PUT", url);
-    REQUEST.setRequestHeader("Accept", "application/json");
-    REQUEST.setRequestHeader("Content-Type", "application/json");
-    return new Promise((resolve, reject) => {
-      REQUEST.onload = () => {
-        if (REQUEST.status >= 200 && REQUEST.status < 300) {
-          resolve(JSON.parse(REQUEST.response));
-        } else {
-          reject(REQUEST);
-        }
-      };
-      REQUEST.send(JSON.stringify(data));
-    });
+  put(url: string, data: DATA_REQUEST) {
+    return this.#mixinRequest(url, methods.put, data);
   }
-}
+
+  delete(url: string, data: DATA_REQUEST) {
+    return this.#mixinRequest(url, methods.delete, data);
+  }
+  }
+
 /*  
 ?Test the get method
 new Shttp().get("http://127.0.0.1:5000/").then((e) => {
