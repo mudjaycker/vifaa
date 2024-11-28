@@ -19,7 +19,7 @@ enum methods {
 //@ts-ignore
 //ignoring ts duplicate name error wich happens because
 //the class in the transpiled file is has the same name with this class
-class Shttp {
+class Srest {
   constructor() {}
 
   #mixinRequest(
@@ -76,7 +76,7 @@ class Shttp {
 
 /*  
 ?Testing the get method
-new Shttp()
+new Srest()
   .get("http://127.0.0.1:5000/")
   .then((e) => {
     console.log(e);
@@ -88,7 +88,7 @@ new Shttp()
 
 /* 
 ?Testing the post method
-new Shttp()
+new Srest()
   .post("http://127.0.0.1:5000/", { payload: { name: "Jon Doe" } })
   .then((e) => {
     console.log(e);
@@ -100,7 +100,7 @@ new Shttp()
 
 /*
   ?Testing the put method 
-  new Shttp()
+  new Srest()
     .put("http://127.0.0.1:5000/", { payload: { name: "Jon Doe" } })
     .then((e) => {
       console.log(e);
@@ -112,7 +112,7 @@ new Shttp()
 
 /* 
   ?Testing the delete method 
-  new Shttp()
+  new Srest()
     .delete("http://127.0.0.1:5000/", { payload: { name: "Jon Doe deleted" } })
     .then((e) => {
       console.log(e);
