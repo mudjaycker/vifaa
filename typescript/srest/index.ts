@@ -74,50 +74,5 @@ class Srest {
   }
 }
 
-/*  
-?Testing the get method
-new Srest()
-  .get("http://127.0.0.1:5000/")
-  .then((e) => {
-    console.log(e);
-  })
-  .catch((e) => {
-    console.log("===>", e);
-  });
-*/
-
-/* 
-?Testing the post method
-new Srest()
-  .post("http://127.0.0.1:5000/", { payload: { name: "Jon Doe" } })
-  .then((e) => {
-    console.log(e);
-  })
-  .catch((e) => {
-    console.log("===>", e);
-  });
-*/
-
-/*
-  ?Testing the put method 
-  new Srest()
-    .put("http://127.0.0.1:5000/", { payload: { name: "Jon Doe" } })
-    .then((e) => {
-      console.log(e);
-    })
-    .catch((e) => {
-      console.log("===>", e);
-    });
-  */
-
-/* 
-  ?Testing the delete method 
-  new Srest()
-    .delete("http://127.0.0.1:5000/", { payload: { name: "Jon Doe deleted" } })
-    .then((e) => {
-      console.log(e);
-    })
-    .catch((e) => {
-      console.log("===>", e);
-    });
-  */
+const srest = new Srest();
+export default srest;
