@@ -14,12 +14,15 @@ CORS(app)
 # on the terminal type: curl http://127.0.0.1:5000/ 
 # returns hello world when we use GET. 
 # returns the data that we send when we use POST. 
-@app.route('/', methods = ['GET']) 
+@app.route('/', methods = ['GET', 'POST']) 
 def home(): 
     if(request.method == 'GET'): 
   
         data = "hello world"
         return jsonify({'data': data})
+    elif(request.method == 'POST'):
+        data = request.get_json() 
+        return jsonify({'data': data}), 201
 
 if __name__ == '__main__': 
   
