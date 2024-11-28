@@ -2,6 +2,12 @@ interface DATA_RESPONSE {
   status: number;
   value?: object | string;
 }
+enum methods {
+  get = "GET",
+  post = "POST",
+  put = "PUT",
+  delete = "DELETE",
+}
 class Shttp {
   constructor() {}
   get(url: string, header = {}) {
