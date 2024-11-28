@@ -2,54 +2,43 @@
 class Shttp {
   constructor() {
   }
-  get(url, header = {}) {
+  #mixinRequest(url, method, data) {
     const REQUEST = new XMLHttpRequest;
-    REQUEST.open("GET", url);
-    return new Promise((resolve, reject) => {
-      REQUEST.onload = () => {
-        if (REQUEST.status >= 200 && REQUEST.status < 300) {
-          resolve(JSON.parse(REQUEST.response));
-        } else {
-          reject(REQUEST);
-        }
-      };
-      REQUEST.send();
-    });
-  }
-  post(url, data, header = {}) {
-    const REQUEST = new XMLHttpRequest;
-    REQUEST.open("POST", url);
+    REQUEST.open(method, url);
     REQUEST.setRequestHeader("Accept", "application/json");
     REQUEST.setRequestHeader("Content-Type", "application/json");
+    if (data?.headers?.authorization) {
+      REQUEST.setRequestHeader("Authorization", data.headers.authorization);
+    }
     return new Promise((resolve, reject) => {
       REQUEST.onload = () => {
-        if (REQUEST.status >= 200 && REQUEST.status < 300) {
-          resolve(JSON.parse(REQUEST.response));
+        if (REQUEST.status >= 200 && REQUEST.status < 400) {
+          let status = REQUEST.status;
+          let value = method == "DELETE" /* delete */ ? REQUEST.statusText : JSON.parse(REQUEST.response);
+          resolve({ status, value });
         } else {
-          reject(REQUEST);
+          let [status, reason] = [REQUEST.status, REQUEST.statusText];
+          let response = { status, reason };
+          reject(response);
         }
       };
-      REQUEST.send(JSON.stringify(data));
+      method == "GET" /* get */ || method == "DELETE" /* delete */ ? REQUEST.send() : REQUEST.send(JSON.stringify(data?.payload));
     });
   }
-  put(url, data, header = {}) {
-    const REQUEST = new XMLHttpRequest;
-    REQUEST.open("PUT", url);
-    REQUEST.setRequestHeader("Accept", "application/json");
-    REQUEST.setRequestHeader("Content-Type", "application/json");
-    return new Promise((resolve, reject) => {
-      REQUEST.onload = () => {
-        if (REQUEST.status >= 200 && REQUEST.status < 300) {
-          resolve(JSON.parse(REQUEST.response));
-        } else {
-          reject(REQUEST);
-        }
-      };
-      REQUEST.send(JSON.stringify(data));
-    });
+  get(url, data = undefined) {
+    return this.#mixinRequest(url, "GET" /* get */, data);
+  }
+  post(url, data) {
+    return this.#mixinRequest(url, "POST" /* post */, data);
+  }
+  put(url, data) {
+    return this.#mixinRequest(url, "PUT" /* put */, data);
+  }
+  delete(url, data) {
+    return this.#mixinRequest(url, "DELETE" /* delete */, data);
   }
 }
-new Shttp().put("http://127.0.0.1:5000/", { data: "John Doe Updated" }).then((e) => {
+new Shttp().delete("http://127.0.0.1:5000/", { payload: { name: "Jon Doe deleted" } }).then((e) => {
   console.log(e);
 }).catch((e) => {
   console.log("===>", e);
