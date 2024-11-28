@@ -1,3 +1,9 @@
+interface DATA_REQUEST {
+  payload: object;
+  headers?: {
+    authorization: string;
+  };
+}
 interface DATA_RESPONSE {
   status: number;
   value?: object | string;
