@@ -20,8 +20,6 @@ enum methods {
 //ignoring ts duplicate name error wich happens because
 //the class in the transpiled file is has the same name with this class
 class Srest {
-  constructor() {}
-
   #mixinRequest(
     url: string,
     method: methods,
@@ -58,9 +56,11 @@ class Srest {
         : REQUEST.send(JSON.stringify(data?.payload));
     });
   }
+
   get(url: string, data: DATA_REQUEST | undefined = undefined) {
     return this.#mixinRequest(url, methods.get, data);
   }
+
   post(url: string, data: DATA_REQUEST) {
     return this.#mixinRequest(url, methods.post, data);
   }
