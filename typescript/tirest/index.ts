@@ -19,7 +19,7 @@ enum methods {
 //@ts-ignore
 //ignoring ts duplicate name error wich happens because
 //the class in the transpiled file is has the same name with this class
-class Srest {
+class Tirest {
   #mixinRequest(
     url: string,
     method: methods,
@@ -74,5 +74,5 @@ class Srest {
   }
 }
 
-const srest = new Srest();
-export default srest;
+const tirest = new Tirest();
+export default tirest;
