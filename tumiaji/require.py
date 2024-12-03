@@ -49,6 +49,6 @@ class Require:
 
 #exemple
 # require = Require(__file__).get
-# y = require("./factorise")
+# y = require("./factoriser")
 
 # print(next(y.factoriser(233)))
