@@ -4,8 +4,11 @@ def factoriser(x: int):
 
     for q in range(x, 1, -1):
         p = x // q
+
         if p * q == x:
             i += 1
             j += 0.5
             if j == i // 2:
                 yield (int(p), q)
+    else:
+        yield None
