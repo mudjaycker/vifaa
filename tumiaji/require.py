@@ -9,9 +9,9 @@ class Require:
     def __init__(self, filename: str):
         """
         _ = Require(__file__)
-        
+
         my_module = _.require("../../home/admin/Desktop/test.py")
-        
+
         print(my_module.x)
 
         ######################## With sambura ###################################
@@ -24,12 +24,21 @@ class Require:
         """
         self.filename = filename
 
-    def require(self, path: str, module_name: str = "random_name"):
+    def get(self, path: str):
 
         fname = Path(self.filename).resolve()
-        directory = Path(fname.parent, path).resolve()
+        file_path = Path(fname.parent, path).resolve()
+        module_name = file_path.name
+        str_file_path = str(file_path).strip()
+        str_file_path = str_file_path + '.py' if file_path.suffix != '.py' else str_file_path
+        file_path = Path(str_file_path)
 
-        spec_loc = importlib.util.spec_from_file_location(module_name, directory)
+        if not file_path.is_file() and not file_path.exists():
+            raise FileNotFoundError(f"File not found: {file_path}")
+        
+        
+
+        spec_loc = importlib.util.spec_from_file_location(module_name, file_path)
         module = importlib.util.module_from_spec(spec_loc)
         sys.modules[module_name] = module
         spec_loc.loader.exec_module(module)
@@ -37,3 +46,9 @@ class Require:
         imported: ModuleType = import_module(module_name)
         del sys.modules[module_name]
         return imported
+
+#exemple
+# require = Require(__file__).get
+# y = require("./factorise")
+
+# print(next(y.factoriser(233)))
