@@ -7,24 +7,21 @@ from pathlib import Path
 
 class Require:
     def __init__(self, filename: str):
-        """
-        _ = Require(__file__)
-
-        my_module = _.require("../../home/admin/Desktop/test.py")
-
-        print(my_module.x)
-
-        ######################## With sambura ###################################
-
-        with sambura(_.require("../path/from/variables.py")): import x as var_1, y # type: ignore
-
-        print(var_1)
-
-        print(y)
-        """
         self.filename = filename
 
     def get(self, path: str):
+        """Access your modules regardless of their location
+
+        Example:
+
+        require = Require(__file__).get
+
+        my_module = require("../../home/my/path/test.py") # '.py' extension is optional.
+
+
+        print(my_module.x)
+        
+        """
 
         fname = Path(self.filename).resolve()
         file_path = Path(fname.parent, path).resolve()
@@ -48,7 +45,7 @@ class Require:
         return imported
 
 #exemple
-# require = Require(__file__).get
-# y = require("./factoriser")
+require = Require(__file__).get
+y = require("./factoriser")
 
 # print(next(y.factoriser(233)))
