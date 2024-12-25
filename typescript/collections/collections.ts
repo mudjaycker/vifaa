@@ -74,9 +74,7 @@ function* factorise(x: number) {
     if (x == p * q) {
       i++;
       j += 0.5;
-      if (j == int(i / 2)) {
-        yield [p, q];
-      }
+      if (j == int(i / 2)) yield [p, q];
     }
   }
 }
@@ -91,4 +89,17 @@ function uniquify(items: Iterable<any>) {
   return uniques;
 }
 
-export { range, ival, list, recense, print, loop, last, int, factorise, uniquify };
+export {
+  range,
+  ival,
+  list,
+  recense,
+  print,
+  loop,
+  last,
+  int,
+  factorise,
+  uniquify,
+};
+
+print(list(factorise(100)))
