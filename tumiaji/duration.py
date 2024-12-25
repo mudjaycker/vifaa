@@ -38,8 +38,8 @@ class RunTill:
 
         def wrapper(*args, **kwargs):
             while self.seconds:
-                time.sleep(self.seconds)
                 yield function(*args, **kwargs)
+                time.sleep(self.seconds)
                 if stamp() >= target_time:
                     break
 

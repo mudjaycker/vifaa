@@ -1,5 +1,6 @@
 import asyncio
 import datetime as dt
+import time
 
 sleep = asyncio.sleep
 
@@ -33,17 +34,47 @@ class aRunTill:
     def __init__(self, seconds: int = 0, timeout: int = 0):
         self.seconds = seconds
         self.timeout = timeout
-        self.datas = []
+        # self.datas = []
 
     def __call__(self, function):
-        stamp = lambda: (dt.datetime.timestamp(dt.datetime.now()))
-        target_time = self.timeout + stamp()
 
         async def wrapper(*args, **kwargs):
+            stamp = lambda: (dt.datetime.timestamp(dt.datetime.now()))
+            target_time = self.timeout + stamp()
+
             while self.seconds:
-                await sleep(self.seconds)
-                self.datas.append(await function(*args, **kwargs))
                 if stamp() >= target_time:
-                    return self.datas
+                    return
+                await function(*args, **kwargs)
+                await sleep(self.seconds)
 
         return wrapper
+
+
+i = 0
+j = 0
+
+
+@aRunTill(0.2, 5)
+async def test():
+    global i
+    i += 1
+    print(i, "a")
+
+
+@aRunTill(3, 2)
+async def test2():
+    global j
+    j += 1
+    print(j, "b")
+
+
+async def main():
+    await asyncio.gather(
+        test2(),
+    )
+
+
+b = time.time()
+asyncio.run(main())
+print(time.time() - b)
