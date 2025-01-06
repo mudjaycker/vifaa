@@ -48,7 +48,7 @@ function recense<T>(iterable: Iterable<T>): Array<number | T>[] {
 function* loop<T>(iterable: Iterable<T>) {
   let index = 0;
   let array = list(iterable);
-  let last_index = array.length - 1;
+  let last_index = array.length
   while (true) {
     if (index == last_index) {
       index = 0;
@@ -87,10 +87,10 @@ function uniquify<T>(items: Iter<T>): T[] {
   return uniques;
 }
 
-function trim(param: string) {
-  if (param.slice(0, 1) == " ") param = param.slice(1);
-  if (param.slice(-1) == " ") param = param.slice(0, -1);
-  return param;
+function trim(text: string) {
+  if (text.slice(0, 1) == " ") text = text.slice(1);
+  if (text.slice(-1) == " ") text = text.slice(0, -1);
+  return text;
 }
 
 function listic(params: string): any[] {
