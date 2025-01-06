@@ -31,7 +31,7 @@ class Require:
         file_path = Path(str_file_path)
 
         if not file_path.is_file() or not file_path.exists():
-            raise FileNotFoundError(f"File not found: {file_path}")
+            raise FileNotFoundError(f"File '{file_path}' not found")
         
         
 
@@ -48,4 +48,4 @@ class Require:
 require = Require(__file__).get
 y = require("./factoriser")
 
-# print(next(y.factoriser(233)))
+print(list(y.find_p_and_q(1998)))
