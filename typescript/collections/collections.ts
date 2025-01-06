@@ -88,6 +88,33 @@ function uniquify(items: Iterable<any>) {
   }
   return uniques;
 }
+function listic(params: string): any[] {
+  const [beFor, aFor] = params.split("for");
+  const [_, atIf] = aFor.split("if");
+  let [aFor2, __] = aFor.split("if");
+  let dataList = [];
+
+  params.split("").forEach((x) => {
+    aFor2 = trim(aFor2);
+  });
+
+  if (aFor2.slice(0, 1) == "(") aFor2 = aFor2.slice(1, -1);
+
+  const block = atIf
+    ? `if(${atIf}) dataList.push(${beFor});    
+  `
+    : `dataList.push(${beFor})`;
+
+  const script = `
+  for(${aFor2}){
+    ${block}
+  }
+  `;
+  // print({ beFor, aFor, aFor2, atIf, script });
+  eval(script);
+  return dataList;
+}
+
 function sel<T>(array: T[] | string, index: number = 0): T | string {
   // let array2 = typeof array == "string" ? array.split("") : list(array);
   index = int(index);
