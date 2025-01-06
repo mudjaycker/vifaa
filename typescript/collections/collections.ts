@@ -66,15 +66,18 @@ function int(a: number | string): number {
   return parseInt(`${a}`);
 }
 
-function* factorise(x: number) {
-  let i = 0;
-  let j = 0;
+function findPandQ(x: number) {
+  let results = new Array<number[]>();
+
   for (let q of range(x, 1, -1)) {
     let p = int(x / q);
-    if (x == p * q) {
-      i++;
-      j += 0.5;
-      if (j == int(i / 2)) yield [p, q];
+
+    if (x == p * q) results.push([p, q]);
+  }
+
+  const halflen = int(results.length / 2) + 1;
+  return results.slice(0, halflen);
+  // return results;
     }
   }
 }
