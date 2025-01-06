@@ -88,6 +88,13 @@ function uniquify(items: Iterable<any>) {
   }
   return uniques;
 }
+function sel<T>(array: T[] | string, index: number = 0): T | string {
+  // let array2 = typeof array == "string" ? array.split("") : list(array);
+  index = int(index);
+
+  if (index >= 0) return array[index];
+  else return array[array.length + index];
+}
 
 export {
   range,
