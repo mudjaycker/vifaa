@@ -7,7 +7,72 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (f) throw new TypeError("Generator is already executing.");
         while (_) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
+            if (y = 0, t)/* ------------------- Difference tool with it helpers ------------------ */
+
+type UnnamedParams = boolean | any[];
+interface DiffParams<T> {
+  array1: T[];
+  array2: T[];
+  detailed?: boolean;
+  uniques?: boolean;
+}
+
+class Difference<T> {
+  result: any;
+  // uniqueData: T[];
+  // all: { diff1: T[]; diff2: T[] };
+
+  constructor(...args: (DiffParams<T> | UnnamedParams)[]) {
+    if (args.length == 1 && this.#isInstanceOfDiffParams(args[0])) {
+      let { array1, array2, detailed, uniques } = args[0] as DiffParams<T>;
+      this.result = this.#perform(array1, array2, detailed, uniques);
+    } else {
+      let [array1, array2, detailed, uniques] = args as any[];
+      this.result = this.#perform(array1, array2, detailed, uniques);
+    }
+  }
+
+  #isInstanceOfDiffParams<T>(obj: any) {
+    let instance: DiffParams<T> = {
+      array1: [],
+      array2: [],
+      detailed: false,
+      uniques: true,
+    };
+    let boolMap = Object.keys(obj).map((x) => x in instance);
+    return boolMap.every(Boolean);
+  }
+
+  #perform(
+    array1: T[],
+    array2: T[],
+    detailed: boolean = false,
+    uniques: boolean = false
+  ) {
+    let diff1 = array1.filter((x) => !array2.includes(x));
+    let diff2 = array2.filter((x) => !array1.includes(x));
+    if (uniques) {
+      return detailed
+        ? {
+            diff1: uniquify(diff1),
+            diff2: uniquify(diff2),
+          }
+        : uniquify([...diff1, ...diff2]);
+    } else {
+      return detailed
+        ? {
+            diff1,
+            diff2,
+          }
+        : [...diff1, ...diff2];
+    }
+  }
+}
+// let x1 = list(range(4));
+// let x2 = [4, 4, 4, 2, 5];
+// console.log(new Difference({ array1: x1, array2: x2, uniques: true, detailed:false }));
+/* ----------------------------------- end ---------------------------------- */
+ op = [op[0] & 2, t.value];
             switch (op[0]) {
                 case 0: case 1: t = op; break;
                 case 4: _.label++; return { value: op[1], done: false };
@@ -123,7 +188,7 @@ function loop(iterable) {
             case 0:
                 index = 0;
                 array = list(iterable);
-                last_index = array.length;
+                last_index = array.length - 1;
                 _a.label = 1;
             case 1:
                 if (!true) return [3 /*break*/, 3];
@@ -168,12 +233,12 @@ function uniquify(items) {
     return uniques;
 }
 exports.uniquify = uniquify;
-function trim(text) {
-    if (text.slice(0, 1) == " ")
-        text = text.slice(1);
-    if (text.slice(-1) == " ")
-        text = text.slice(0, -1);
-    return text;
+function trim(param) {
+    if (param.slice(0, 1) == " ")
+        param = param.slice(1);
+    if (param.slice(-1) == " ")
+        param = param.slice(0, -1);
+    return param;
 }
 function listic(params) {
     var _a = params.split("for"), beFor = _a[0], aFor = _a[1];
