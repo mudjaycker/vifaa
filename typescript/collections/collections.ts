@@ -1,5 +1,5 @@
 const list = Array.from;
-const print = console.log;
+const display = console.log;
 
 function* range(
   begin: number = 0,
@@ -48,7 +48,7 @@ function recense<T>(iterable: Iterable<T>): Array<number | T>[] {
 function* loop<T>(iterable: Iterable<T>) {
   let index = 0;
   let array = list(iterable);
-  let last_index = array.length
+  let last_index = array.length;
   while (true) {
     if (index == last_index) {
       index = 0;
@@ -115,7 +115,7 @@ function listic(params: string): any[] {
     ${block}
   }
   `;
-  // print({ beFor, aFor, aFor2, atIf, script });
+  // display({ beFor, aFor, aFor2, atIf, script });
   eval(script);
   return dataList;
 }
@@ -127,7 +127,7 @@ function listic(params: string): any[] {
 // { a: 4, d: 6 },
 // ];
 // const x = listic(`o for let o of  objs if o['a']%2==0`);
-// print(x);
+// display(x);
 
 function* iter<T>(iterable: Iter<T>) {
   for (let i of iterable) {
@@ -154,7 +154,12 @@ interface DiffParams<T> {
 }
 
 class Difference<T> {
-  result: any;
+  result:
+    | T[]
+    | {
+        diff1: T[];
+        diff2: T[];
+      };
   // uniqueData: T[];
   // all: { diff1: T[]; diff2: T[] };
 
@@ -214,7 +219,7 @@ export {
   ival,
   list,
   recense,
-  print,
+  display,
   loop,
   int,
   findPandQ,
@@ -224,4 +229,4 @@ export {
   sel,
 };
 
-// print(findPandQ(233))
+// display(findPandQ(233))
