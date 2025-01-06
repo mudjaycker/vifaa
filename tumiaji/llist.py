@@ -99,6 +99,7 @@ if __name__ == "__main__":
         {"name": "MARYIMANA", "age": 13},
     ]
     # {"name": "MARYIMANA", "age": 19}
+    """ test """
 
     mylist = ArrayDict(x, unique_key="age", limit=7, limit_error=True)
     mylist.push(
