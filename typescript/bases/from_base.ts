@@ -23,3 +23,10 @@ function from_base(number_: string, base: number = 2): number {
 
   return result;
 }
+
+const x= ["a", "b", "c", "d", "e", "f",]
+
+for(let i in x){
+  console.log(i);
+  
+}

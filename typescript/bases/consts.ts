@@ -1,3 +1,4 @@
+import { ival, range } from "../collections/collections";
 const letters = [
   "A",
   "B",
@@ -25,16 +26,37 @@ const letters = [
   "X",
   "Y",
   "Z",
+  "{",
+  "}",
+  "[",
+  "]",
+  "(",
+  ")",
+  ",",
+  ".",
+  ":",
+  ";",
+  "'",
+  "!",
+  "?",
+  "-",
+  "_",
+  "+",
+  '"',
+  " ",
 ];
 
 let NUM_MAP: Map<number, string> = new Map();
 
-for (let i = 0; i < 10; i++) {
+for (let i of range(10)) {
   NUM_MAP.set(i, JSON.stringify(i));
 }
 
-for (let i in letters) {
-  NUM_MAP.set(Number(i) + 10, letters[i]);
+for (let [index, value] of ival(letters)) {
+  value = String(value);  
+  console.log([index, value]);
+  
+  NUM_MAP.set(Number(index) + 10, value);
 }
 
 export default NUM_MAP;
