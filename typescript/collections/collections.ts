@@ -88,6 +88,13 @@ function uniquify(items: Iterable<any>) {
   }
   return uniques;
 }
+
+function trim(param: string) {
+  if (param.slice(0, 1) == " ") param = param.slice(1);
+  if (param.slice(-1) == " ") param = param.slice(0, -1);
+  return param;
+}
+
 function listic(params: string): any[] {
   const [beFor, aFor] = params.split("for");
   const [_, atIf] = aFor.split("if");
