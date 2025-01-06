@@ -1,14 +1,14 @@
-def factoriser(x: int):
-    i = 0
-    j = 0
+from typing import Generator
 
-    for q in range(x, 1, -1):
+
+def find_p_and_q(x: int) -> Generator[int, None, None]:
+    results = []
+
+    for q in range(1, x):
         p = x // q
 
-        if p * q == x:
-            i += 1
-            j += 0.5
-            if j == i // 2:
-                yield (int(p), q)
-    else:
-        yield None
+        if (p * q) == x:
+            if (elts := tuple(sorted((p, q)))) not in results:
+                results.append(elts)
+
+    return (i for i in results)
