@@ -73,7 +73,6 @@ function findPandQ(x: number) {
 
   const halflen = int(results.length / 2) + 1;
   return results.slice(0, halflen);
-  // return results;
 }
 
 type Iter<T> = Array<T> | Generator<T>;
@@ -115,19 +114,9 @@ function listic(params: string): any[] {
     ${block}
   }
   `;
-  // display({ beFor, aFor, aFor2, atIf, script });
   eval(script);
   return dataList;
 }
-
-// const y = listic(`j for j of range(0,50, 3)`);
-// const objs = [
-// { a: 2, b: 4 },
-// { a: 3, c: 5 },
-// { a: 4, d: 6 },
-// ];
-// const x = listic(`o for let o of  objs if o['a']%2==0`);
-// display(x);
 
 function* iter<T>(iterable: Iter<T>) {
   for (let i of iterable) {
@@ -136,8 +125,8 @@ function* iter<T>(iterable: Iter<T>) {
 }
 
 function sel<T>(array: T[] | string, index: number = 0): T | string {
-  // let array2 = typeof array == "string" ? array.split("") : list(array);
-  index = int(index);
+  index = int(index);  // let array2 = typeof array == "string" ? array.split("") : list(array);
+
 
   if (index >= 0) return array[index];
   else return array[array.length + index];
@@ -153,15 +142,17 @@ interface DiffParams<T> {
   uniques?: boolean;
 }
 
+type DiffResult<T> = T[]| {
+  diff1: T[];
+  diff2: T[];
+}
+
 class Difference<T> {
-  result:
-    | T[]
-    | {
-        diff1: T[];
-        diff2: T[];
-      };
-  // uniqueData: T[];
-  // all: { diff1: T[]; diff2: T[] };
+  result: T[]| {
+    diff1: T[];
+    diff2: T[];
+  }
+    
 
   constructor(...args: (DiffParams<T> | UnnamedParams)[]) {
     if (args.length == 1 && this.#isInstanceOfDiffParams(args[0])) {
@@ -184,7 +175,7 @@ class Difference<T> {
     return boolMap.every(Boolean);
   }
 
-  #perform(
+  #perform<T>(
     array1: T[],
     array2: T[],
     detailed: boolean = false,
@@ -208,10 +199,7 @@ class Difference<T> {
         : [...diff1, ...diff2];
     }
   }
-}
-// let x1 = list(range(4));
-// let x2 = [4, 4, 4, 2, 5];
-// console.log(new Difference({ array1: x1, array2: x2, uniques: true, detailed:false }));
+};
 /* ----------------------------------- end ---------------------------------- */
 
 export {
