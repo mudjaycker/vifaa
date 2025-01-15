@@ -51,7 +51,6 @@ class IterableToCheck<T> {
 }
 
 const check = <T>(iterable: Iterable<T> | T) => new IterableToCheck(iterable); // shortcut do that we don't need to instance each time
-// console.log(check([1, 2, 3, 3, 4, 5, 3, 5]).hasRepeated(3));
 
 export default check;
 export { IterableToCheck };
