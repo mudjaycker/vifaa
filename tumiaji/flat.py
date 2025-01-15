@@ -24,7 +24,3 @@ def flat(items: t.Iterable[T] | dict[U, T]):
             results.append(i)
     return results
 
-
-x = [[i, j*2] for i,j in enumerate(range(10))]
-
-print(flat(x))
