@@ -4,3 +4,4 @@ setup.py
 test.**
 **/test/
 **dist/
+tumiaji/frandico/dico/*

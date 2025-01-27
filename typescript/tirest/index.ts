@@ -1,14 +1,14 @@
-interface DATA_REQUEST {
-  payload: object;
+type DATA_REQUEST = {
+  payload: { [key: string]: any };
   headers?: {
     authorization: string;
   };
-}
+};
 
-interface DATA_RESPONSE {
+type DATA_RESPONSE = {
   status: number;
-  value?: object | string;
-}
+  value?: { [key: string]: any };
+};
 
 enum methods {
   get = "GET",

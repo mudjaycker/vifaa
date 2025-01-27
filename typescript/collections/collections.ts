@@ -87,22 +87,24 @@ function uniquify<T>(items: Iter<T>): T[] {
 }
 
 function trim(text: string) {
-  if (text.slice(0, 1) == " ") text = text.slice(1);
-  if (text.slice(-1) == " ") text = text.slice(0, -1);
+  if (sel(text, 0) == " ") return trim(text.slice(1));
+  if (sel(text, -1) == " ") return trim(text.slice(0, -1));
   return text;
 }
 
+// display(trim("          bonus     ").length);
+
 function listic(params: string): any[] {
-  const [beFor, aFor] = params.split("for");
-  const [_, atIf] = aFor.split("if");
-  let [aFor2, __] = aFor.split("if");
+  const [beFor, atFor] = params.split("for");
+  const [_, atIf] = atFor.split("if");
+  let [atFor2, __] = atFor.split("if");
   let dataList = [];
 
   params.split("").forEach((x) => {
-    aFor2 = trim(aFor2);
+    atFor2 = trim(atFor2);
   });
 
-  if (aFor2.slice(0, 1) == "(") aFor2 = aFor2.slice(1, -1);
+  if (atFor2.slice(0, 1) == "(") atFor2 = atFor2.slice(1, -1);
 
   const block = atIf
     ? `if(${atIf}) dataList.push(${beFor});    
@@ -110,7 +112,7 @@ function listic(params: string): any[] {
     : `dataList.push(${beFor})`;
 
   const script = `
-  for(${aFor2}){
+  for(${atFor2}){
     ${block}
   }
   `;
@@ -125,52 +127,79 @@ function* iter<T>(iterable: Iter<T>) {
 }
 
 function sel<T>(array: T[] | string, index: number = 0): T | string {
-  index = int(index);  // let array2 = typeof array == "string" ? array.split("") : list(array);
-
+  index = int(index); // let array2 = typeof array == "string" ? array.split("") : list(array);
 
   if (index >= 0) return array[index];
   else return array[array.length + index];
 }
 
-/* ------------------- Difference tool with it helpers ------------------ */
+type ItemType<T> = (T | string)[] | string;
+function sub<T>(items: ItemType<T>, { from_ = 0, to = 0 }) {
+  from_ = !!from_ ? from_ : 0;
+  to = !!to ? to : items.length;
+  let new_items = list(items);
+  let result = [] as (T | string)[];
 
-type UnnamedParams = boolean | any[];
-interface DiffParams<T> {
+  if (from_ < 0) {
+    new_items.reverse();
+    from_ = Math.abs(from_) - 1;
+    // to = to > 0?  new_items.length-to: to
+    to = to == items.length ? to : new_items.length - to;
+  }
+  if (to < 0) {
+    throw EvalError(
+      `The parameter "to" must be a positive integer but got ${to}`
+    );
+  }
+
+  for (let i of range(from_, to)) {
+    display(sel(new_items, i), i);
+    result.push(sel(new_items, i));
+  }
+
+  return typeof items == "string" ? result.join("") : result;
+}
+
+/* ------------------- Differents tool with it helpers ------------------ */
+
+type UnnamedParams = any | boolean[];
+type DiffParams<T> = {
   array1: T[];
   array2: T[];
   detailed?: boolean;
   uniques?: boolean;
-}
+};
 
-type DiffResult<T> = T[]| {
-  diff1: T[];
-  diff2: T[];
-}
+type DiffType<T> =
+  | T[]
+  | {
+      diff1: T[];
+      diff2: T[];
+    };
 
-class Difference<T> {
-  result: T[]| {
-    diff1: T[];
-    diff2: T[];
-  }
-    
+class Differents<T> {
+  result: DiffType<T>;
 
-  constructor(...args: (DiffParams<T> | UnnamedParams)[]) {
-    if (args.length == 1 && this.#isInstanceOfDiffParams(args[0])) {
-      let { array1, array2, detailed, uniques } = args[0] as DiffParams<T>;
+  constructor(...args: DiffParams<T>[]) {
+    // if (args.length == 1 && this.#isInstanceOfDiffParams(args[0])) {
+    let { array1, array2, detailed, uniques } = args[0] as DiffParams<T>;
+    this.result = this.#perform(array1, array2, detailed, uniques);
+    //}
+    /* else {
+      let [array1, array2, detailed, uniques] = args as UnnamedParams;
       this.result = this.#perform(array1, array2, detailed, uniques);
-    } else {
-      let [array1, array2, detailed, uniques] = args as any[];
-      this.result = this.#perform(array1, array2, detailed, uniques);
-    }
+      array1;
+    } */
   }
 
-  #isInstanceOfDiffParams<T>(obj: any) {
+  #isInstanceOfDiffParams<T>(obj: T) {
     let instance: DiffParams<T> = {
       array1: [],
       array2: [],
       detailed: false,
       uniques: true,
     };
+    //@ts-ignore
     let boolMap = Object.keys(obj).map((x) => x in instance);
     return boolMap.every(Boolean);
   }
@@ -183,11 +212,16 @@ class Difference<T> {
   ) {
     let diff1 = array1.filter((x) => !array2.includes(x));
     let diff2 = array2.filter((x) => !array1.includes(x));
+    let repeated = [
+      ...array1.filter((x) => array2.includes(x)),
+      ...array2.filter((x) => array1.includes(x)),
+    ];
     if (uniques) {
       return detailed
         ? {
             diff1: uniquify(diff1),
             diff2: uniquify(diff2),
+            repeated: uniquify(repeated),
           }
         : uniquify([...diff1, ...diff2]);
     } else {
@@ -195,11 +229,94 @@ class Difference<T> {
         ? {
             diff1,
             diff2,
+            repeated: uniquify(repeated),
           }
         : [...diff1, ...diff2];
     }
   }
-};
+}
+const differents = <T>(...args: DiffParams<T>[]) => new Differents(...args);
+// let d = differents({ array1: [1, 2, 6, 7], array2: [2, 3, 7], detailed: true });
+// display(d);
+
+function undifferents<T>(array1: T[], array2: T[], uniques = true): T[] {
+  const items = [...array1, ...array2];
+  const diffs = differents({ array1, array2 }).result as T[];
+  const result = items.filter((item) => !diffs.includes(item));
+  return uniques ? uniquify(result) : result;
+}
+
+const sameItems = undifferents;
+
+// display(sameItems([1, 5, 7, 9], [8, 9, 15, 1, 7]));
+/* ----------------------------------- end ---------------------------------- */
+
+/* -------------------------------- deepFlat ------------------------------- */
+interface objx<T> {
+  [key: string]: T;
+}
+
+function deepFlat<T, U>(items: Iterable<T> | objx<U>) {
+  var res: any[] = [];
+  items = Object.values(items);
+
+  for (let i of items) {
+    if (typeof i == "object") {
+      //@ts-ignore
+      res = [...res, ...deepFlat(Object.values(i))];
+    } else res.push(i);
+  }
+  return res;
+}
+
+const obj = [
+  {
+    a: {
+      b: {
+        c: 3,
+      },
+      b2: {
+        c2: 8,
+      },
+    },
+    f: {
+      n: "nano",
+    },
+  },
+  {
+    x: {
+      b: {
+        c: 9,
+      },
+      z2: {
+        c2: 83,
+      },
+    },
+    f: {
+      n: "oh",
+    },
+  },
+];
+display(deepFlat(obj));
+let x = deepFlat({
+  a: ["3"],
+  f: {
+    g: 7,
+  },
+});
+display(x);
+/* ----------------------------------- end ---------------------------------- */
+
+/* ------------------------------- objWithout ------------------------------- */
+function objWithout(obj: { [key: string]: any }, omittedKeys: string[]) {
+  let newObj: { [key: string]: any } = {};
+  for (let key in obj) {
+    if (!omittedKeys.includes(key)) {
+      newObj[key] = obj[key];
+    }
+  }
+  return newObj;
+}
 /* ----------------------------------- end ---------------------------------- */
 
 export {
@@ -215,6 +332,9 @@ export {
   listic,
   iter,
   sel,
+  deepFlat,
+  differents,
+  sub,
+  undifferents,
+  sameItems,
 };
-
-// display(findPandQ(233))

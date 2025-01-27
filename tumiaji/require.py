@@ -1,5 +1,5 @@
 import importlib.util
-from importlib import import_module
+# from importlib import import_module
 import sys
 from types import ModuleType
 from pathlib import Path
@@ -47,5 +47,4 @@ class Require:
 #exemple
 require = Require(__file__).get
 y = require("./factoriser")
-
 print(list(y.find_p_and_q(1998)))

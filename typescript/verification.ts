@@ -5,9 +5,9 @@ class IterableToCheck<T> {
     this.iterable = iterable;
   }
 
-  isTrue(): boolean {
+  isNotEmpty(): boolean {
     if (typeof this.iterable === "object")
-      return !!Object.keys(this.iterable as Iterable<T>).length;
+      return Object.keys(this.iterable as Iterable<T>).length > 0;
 
     return !!this.iterable;
   }
