@@ -1,4 +1,4 @@
-def style(cls, value: int, text: str):
+def style(value: int, text: str):
     return f"\033[{value}m{text}\033[0m"
 
 
