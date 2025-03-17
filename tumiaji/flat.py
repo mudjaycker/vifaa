@@ -18,7 +18,7 @@ def flat(items: Iterable[T] | dict[U, T]) -> list[T]:
     for i in items:
         if isinstance(i, (list, set, tuple)):
             results.extend(flat(i))  # type: ignore
-        elif isinstance(i, dict):
+        elif isinstance(i, dict):   
             results.extend(flat(listify(i)))  # type: ignore
         else:
             results.append(i)
