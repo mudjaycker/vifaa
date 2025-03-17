@@ -1,7 +1,15 @@
-function sleep(seconds: number) {
-  seconds *= 1000;
-  let now = () => new Date().getTime();
-  let duration = seconds + now();
+function sleep(milliseconds: number) {
+    let now = () => new Date().getTime();
+    let duration = milliseconds + now();
 
-  while (now() < duration) {}
+    while (now() < duration) {}
+}
+
+function asleep(milliseconds: number) {
+    return new Promise((res) => {
+        const i = setTimeout((x) => {
+            res(x);
+            clearTimeout(i)
+        }, milliseconds);
+    });
 }
