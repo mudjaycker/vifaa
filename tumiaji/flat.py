@@ -1,4 +1,4 @@
-from typing import Iterable, TypeVar, Any
+from typing import Iterable, TypeVar
 
 T = TypeVar("T")
 U = TypeVar("U")
@@ -11,8 +11,8 @@ def listify(data: Iterable[T] | dict[U, T]):
         return list(data)
 
 
-def flat(items: Iterable[T] | dict[U, T]) -> list[Any]:
-    results: list[Any] = []
+def flat(items: Iterable[T] | dict[U, T]) -> list[T]:
+    results: list[T] = []
     items = listify(items)
 
     for i in items:
@@ -23,35 +23,3 @@ def flat(items: Iterable[T] | dict[U, T]) -> list[Any]:
         else:
             results.append(i)
     return results
-
-
-obj: list[dict[str, Any]] = [
-    {
-        "a": {
-            "b": {
-                "c": 3,
-            },
-            "b2": {
-                "c2": 8,
-            },
-        },
-        "f": {
-            "n": "nano",
-        },
-    },
-    {
-        "x": {
-            "b": {
-                "c": 9,
-            },
-            "z2": {
-                "c2": 83,
-            },
-        },
-        "f": {
-            "n": "ohh",
-        },
-    },
-]
-t = flat(obj)
-print(t)
