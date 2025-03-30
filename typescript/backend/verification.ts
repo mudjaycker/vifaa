@@ -14,7 +14,7 @@ class IterableToCheck<T> {
         return !result.length;
     }
 
-    hasRepeated(value: T | string): { result: boolean; count: number } {
+    hasRepeated(value: T | string) {
         let array = Object.values(this.iterable);
         let count = 0;
 
@@ -31,6 +31,5 @@ class IterableToCheck<T> {
 
 const check = <T>(iterable: T[] | string) => new IterableToCheck(iterable); // shortcut do that we don't need to instance each time
 
-const x = "allemagne nazi";
-const c = check(x);
-console.log(c.hasRepeated(5));
+export default check;
+export { IterableToCheck };
