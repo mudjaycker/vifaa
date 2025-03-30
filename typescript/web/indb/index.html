@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="stylesheet" href="dist/style.css" />
+        <!-- <script src="dist/index.js"></script> -->
+        <script src="dist/dblocal.js"></script>
+    </head>
+    <body>
+        <section class="container">
+            <div>Whatsapp</div>
+            <div>Telegram</div>
+            <div>Gmail</div>
+        </section>
+
+        <script>
+            const container = Array.from(
+                document.getElementsByClassName("container")
+            )[0];
+            const children = Array.from(container.children);
+            const links = [
+                "https://web.whatsapp.com/",
+                "https://web.telegram.org/a/",
+                "https://mail.google.com/mail/u/0/",
+            ];
+
+            children.forEach((child, i) => {
+                child.addEventListener("click", () => {
+                    window.open(links[i], "_blank");
+                    // window.location.href = links[i]
+                });
+            });
+        </script>
+    </body>
+</html>
