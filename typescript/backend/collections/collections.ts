@@ -146,7 +146,6 @@ function sub<T>(items: ItemType<T>, { from_ = 0, to = 0 }) {
 }
 
 /* ------------------- Differents tool ------------------ */
-
 type DiffParams<T> = {
     array1: T[];
     array2: T[];
@@ -159,6 +158,7 @@ type ResType<T> = {
     right: T[];
     repeated: T[];
 };
+
 class Differents<T> {
     result: ResType<T> | T[];
 
@@ -220,17 +220,11 @@ function sameItems<T>(array1: T[], array2: T[], uniques = true) {
 /* ----------------------------------- end ---------------------------------- */
 
 /* -------------------------------- deepFlat ------------------------------- */
-interface objx<T> {
-    [key: string]: T;
-}
-
-function deepFlat<T, U>(items: Iterable<T> | objx<U>) {
+function deepFlat(items: object) {
     var res: any[] = [];
-    items = Object.values(items);
 
-    for (let i of items) {
+    for (let i of Object.values(items)) {
         if (typeof i == "object") {
-            //@ts-ignore
             res = [...res, ...deepFlat(Object.values(i))];
         } else res.push(i);
     }
@@ -267,4 +261,5 @@ export {
     differents,
     sub,
     sameItems,
+    objWithout,
 };
