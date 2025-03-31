@@ -33,7 +33,6 @@ function recense<T>(iterable: Iterable<T>) {
     });
 }
 
-
 function* loop<T>(iterable: Iterable<T>) {
     let index = 0;
     let array = list(iterable);
@@ -151,7 +150,6 @@ function sub<T>(items: ItemType<T>, { from_ = 0, to = 0 }) {
 
 /* ------------------- Differents tool with it helpers ------------------ */
 
-type UnnamedParams = any | boolean[];
 type DiffParams<T> = {
     array1: T[];
     array2: T[];
@@ -159,38 +157,19 @@ type DiffParams<T> = {
     uniques?: boolean;
 };
 
-type DiffType<T> =
-    | T[]
-    | {
-          diff1: T[];
-          diff2: T[];
-      };
-
+type ResType<T> = {
+    left: T[];
+    right: T[];
+    repeated: T[];
+};
 class Differents<T> {
-    result: DiffType<T>;
+    result: ResType<T> | T[];
 
-    constructor(...args: DiffParams<T>[]) {
-        // if (args.length == 1 && this.#isInstanceOfDiffParams(args[0])) {
-        let { array1, array2, detailed, uniques } = args[0] as DiffParams<T>;
-        this.result = this.#perform(array1, array2, detailed, uniques);
-        //}
-        /* else {
-      let [array1, array2, detailed, uniques] = args as UnnamedParams;
-      this.result = this.#perform(array1, array2, detailed, uniques);
-      array1;
-    } */
-    }
-
-    #isInstanceOfDiffParams<T>(obj: T) {
-        let instance: DiffParams<T> = {
-            array1: [],
-            array2: [],
-            detailed: false,
-            uniques: true,
-        };
-        //@ts-ignore
-        let boolMap = Object.keys(obj).map((x) => x in instance);
-        return boolMap.every(Boolean);
+    constructor(args: DiffParams<T>) {
+        let { array1, array2, detailed, uniques } = args;
+        this.result = this.#perform(array1, array2, detailed, uniques) as
+            | T[]
+            | ResType<T>;
     }
 
     #perform<T>(
@@ -199,8 +178,8 @@ class Differents<T> {
         detailed: boolean = false,
         uniques: boolean = false
     ) {
-        let diff1 = array1.filter((x) => !array2.includes(x));
-        let diff2 = array2.filter((x) => !array1.includes(x));
+        let left = array1.filter((x) => !array2.includes(x));
+        let right = array2.filter((x) => !array1.includes(x));
         let repeated = [
             ...array1.filter((x) => array2.includes(x)),
             ...array2.filter((x) => array1.includes(x)),
@@ -208,36 +187,39 @@ class Differents<T> {
         if (uniques) {
             return detailed
                 ? {
-                      diff1: uniquify(diff1),
-                      diff2: uniquify(diff2),
+                      left: uniquify(left),
+                      right: uniquify(right),
                       repeated: uniquify(repeated),
                   }
-                : uniquify([...diff1, ...diff2]);
+                : uniquify([...left, ...right]);
         } else {
             return detailed
                 ? {
-                      diff1,
-                      diff2,
+                      left,
+                      right,
                       repeated: uniquify(repeated),
                   }
-                : [...diff1, ...diff2];
+                : [...left, ...right];
         }
     }
 }
-const differents = <T>(...args: DiffParams<T>[]) => new Differents(...args);
+const differents = <T>(args: DiffParams<T>) => new Differents(args);
 // let d = differents({ array1: [1, 2, 6, 7], array2: [2, 3, 7], detailed: true });
 // display(d);
 
-function undifferents<T>(array1: T[], array2: T[], uniques = true) {
-    const items = [...array1, ...array2];
-    const diffs = differents({ array1, array2 }).result as T[];
-    const result = items.filter((item) => !diffs.includes(item));
-    return uniques ? uniquify(result) : result;
+/* ----------------------------------- sameItems ---------------------------------- */
+function sameItems<T>(array1: T[], array2: T[], uniques = true) {
+    const res = differents({
+        array1,
+        array2,
+        uniques,
+        detailed: true,
+    }).result as ResType<T>;
+    return res.repeated;
 }
-
-const sameItems = undifferents;
-
 // display(sameItems([1, 5, 7, 9], [8, 9, 15, 1, 7])); //=> [ 1, 7, 9 ]
+/* ----------------------------------- end ---------------------------------- */
+
 /* ----------------------------------- end ---------------------------------- */
 
 /* -------------------------------- deepFlat ------------------------------- */
