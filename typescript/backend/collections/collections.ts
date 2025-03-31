@@ -1,5 +1,6 @@
 const list = Array.from;
 const display = console.log;
+const int = (a: number | string) => parseInt(`${a}`);
 
 function* range(
     begin: number = 0,
@@ -44,10 +45,6 @@ function* loop<T>(iterable: Iterable<T>) {
         yield array[index];
         index++;
     }
-}
-
-function int(a: number | string): number {
-    return parseInt(`${a}`);
 }
 
 function findPandQ(x: number) {
