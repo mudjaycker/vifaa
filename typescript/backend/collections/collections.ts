@@ -145,7 +145,7 @@ function sub<T>(items: ItemType<T>, { from_ = 0, to = 0 }) {
     return typeof items == "string" ? result.join("") : result;
 }
 
-/* ------------------- Differents tool with it helpers ------------------ */
+/* ------------------- Differents tool ------------------ */
 
 type DiffParams<T> = {
     array1: T[];
