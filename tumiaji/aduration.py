@@ -24,8 +24,8 @@ class aInterval:
     def __call__(self, function):
         async def wrapper(*args, **kwargs):
             while self.seconds:
-                await sleep(self.seconds)
                 await function(*args, **kwargs)
+                await sleep(self.seconds)
 
         return wrapper
 
