@@ -18,7 +18,7 @@ enum methods {
 }
 //@ts-ignore
 //ignoring ts duplicate name error wich happens because
-//the class in the transpiled file is has the same name with this class
+//the class in the transpiled file has the same name with this class
 class Tirest {
   #mixinRequest(
     url: string,
@@ -57,7 +57,7 @@ class Tirest {
     });
   }
 
-  get(url: string, data: DATA_REQUEST | undefined = undefined) {
+  get(url: string, data: DATA_REQUEST ) {
     return this.#mixinRequest(url, methods.get, data);
   }
 
