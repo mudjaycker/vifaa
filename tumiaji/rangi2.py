@@ -1,4 +1,4 @@
-from rangi import rangi
+from .rangi import rangi
 
 class rangi2:
     __text: str = ""

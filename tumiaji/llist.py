@@ -88,38 +88,6 @@ class ArrayDict:
         for i, _ in self.__getitems(callback):
             del self.items[i]
 
-    def print(self, items: list[dict] | dict):
-        formated = json.dumps(items, indent=2)
-        print(formated)
-
-
-if __name__ == "__main__":
-    x = [
-        {"name": "BUTOYI", "age": 17},
-        {"name": "MARYIMANA", "age": 13},
-    ]
-    # {"name": "MARYIMANA", "age": 19}
-    """ test """
-
-    mylist = ArrayDict(x, unique_key="age", limit=7, limit_error=True)
-    mylist.push(
-        {"name": "MARYIMANAs", "age": 12},
-        {"name": "GAGA", "age": 16},
-        {"name": "MARY", "age": 15},
-        {"name": "Bary", "age": 15},
-    )
-    group = mylist.group_by(lambda name: name[0])
-    print("Group:")
-    mylist.print(group)
-
-    # filtered = mylist.filter(lambda age, name: age > 12 and name.startswith("MARY"))
-    # print("\nFiltered:")
-    # mylist.print(filtered)
-
-    # gotten = mylist.get(lambda age, name: age > 12 and name.startswith("MARY"))
-    # print("\nGotten:")
-    # mylist.print(gotten)
-
-    # mylist.delete(lambda age, name: age > 12 and name.startswith("MARY"))
-    # print("\nRemoved:")
-    # mylist.print(mylist.items)
+    # def print(self, items: list[dict] | dict):
+        # formated = json.dumps(items, indent=2)
+        # print(formated)

@@ -1,4 +1,4 @@
-from consts import numbers_map
+from .consts import numbers_map
 
 
 def to_base(number: int, base: int = 2) -> str:
@@ -16,5 +16,5 @@ def to_base(number: int, base: int = 2) -> str:
     return result
 
 
-number = 62_908_919_851_366
-print(to_base(number, 36))  # /=> MARYIMANA
+# number = 62_908_919_851_366
+# print(to_base(number, 36))  # /=> MARYIMANA

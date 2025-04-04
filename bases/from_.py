@@ -1,10 +1,10 @@
-from consts import numbers_map
+from .consts import numbers_map
 from functools import reduce
 
 inverted_map: dict[str, int] = {v: k for k, v in numbers_map.items()}
 
-x = reduce(lambda acc="", i="": i + acc, "buntu")
-print(x)
+# x = reduce(lambda acc="", i="": i + acc, "buntu")
+# print(x)
 
 
 def from_base(number: str | int, base: int = 2):
@@ -25,4 +25,4 @@ def from_base(number: str | int, base: int = 2):
 
 
 # print(from_base("309b 66f6 88bf ad72", 16)) # /=> 3502506344252943730
-print(from_base("87", 9))
+# print(from_base("87", 9))

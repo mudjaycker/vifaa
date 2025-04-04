@@ -45,6 +45,6 @@ class Require:
         return imported
 
 #exemple
-require = Require(__file__).get
-y = require("./factoriser")
-print(list(y.find_p_and_q(1998)))
+# require = Require(__file__).get
+# y = require("./factoriser")
+# print(list(y.find_p_and_q(1998)))

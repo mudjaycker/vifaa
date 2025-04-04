@@ -19,9 +19,9 @@ def get_weekday(date_: t.Iterable[int]):
     return result
 
 
-x = [1976, 5, 31]
+# x = [1976, 5, 31]
 
-print(get_weekday(x), dt(*x).weekday())
+# print(get_weekday(x), dt(*x).weekday())
 
 
 """ def days(date_from: t.Iterable[int], date_to: t.Iterable[int]):
