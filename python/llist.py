@@ -102,15 +102,15 @@ class ArrayDict[T]:
         return self.formated()
 
 
-x = [
-    {"name": "rara", "age": 9},
-    {"name": "oki", "age": 45},
-    {"name": "waral", "age": 62},
-    {"name": "anna", "age": 11},
-]
+# x = [
+    # {"name": "rara", "age": 9},
+    # {"name": "oki", "age": 45},
+    # {"name": "waral", "age": 62},
+    # {"name": "anna", "age": 11},
+# ]
 
-y = ArrayDict(x)
+# y = ArrayDict(x)
 
 
-y.push({"name": "nane", "age": 8}, {"name": "ara", "age": 10}, {"name": "anny", "age": 11})
-print(y.get(lambda name: len(name) ==3))
+# y.push({"name": "nane", "age": 8}, {"name": "ara", "age": 10}, {"name": "anny", "age": 11})
+# print(y.get(lambda name: len(name) ==3))
