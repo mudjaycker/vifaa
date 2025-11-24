@@ -10,7 +10,7 @@ class aWaitFor:
         self.seconds = seconds
 
     def __call__[T](self, function: T_Func[T]):
-        
+
         async def wrapper(*args:T_Args, **kwargs: T_Args):
             await sleep(self.seconds)
             return await function(*args, **kwargs)
@@ -23,7 +23,7 @@ class aInterval:
         self.seconds = seconds
 
     def __call__[T](self, function: T_Func[T]):
-        
+
         async def wrapper(*args:T_Args, **kwargs:T_Args):
             while self.seconds:
                 await function(*args, **kwargs)
@@ -39,7 +39,7 @@ class aRunTill:
         # self.datas = []
 
     def __call__[T](self, function: T_Func[T]):
-        
+
         async def wrapper(*args:T_Args, **kwargs:T_Args):
             stamp = lambda: (dt.datetime.timestamp(dt.datetime.now()))
             target_time = self.timeout + stamp()
