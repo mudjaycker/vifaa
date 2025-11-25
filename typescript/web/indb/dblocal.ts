@@ -9,8 +9,8 @@ interface T_TableSchema {
     columns: Column[];
 }
 
-type T_DataOutput = { id: number } & Record<string, any>;
 type T_DataInput = Record<string, any>;
+type T_DataOutput = { id: number } & T_DataInput;
 
 function sleep(milliseconds: number) {
     return new Promise((res) => {
