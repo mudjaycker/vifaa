@@ -9,6 +9,9 @@ interface T_TableSchema {
     columns: Column[];
 }
 
+type T_DataOutput = { id: number } & Record<string, any>;
+type T_DataInput = Record<string, any>;
+
 function sleep(milliseconds: number) {
     return new Promise((res) => {
         const i = setTimeout(() => {
@@ -20,9 +23,10 @@ function sleep(milliseconds: number) {
 
 class InDB {
     #request: IDBOpenDBRequest;
-    #result: object;
+    #result: T_DataOutput[] = [];
     dbname: string;
     version: number;
+    
     constructor(dbname: string, version: number) {
         this.dbname = dbname;
         this.version = version;
@@ -53,8 +57,8 @@ class InDB {
 
     #doAll(tablename: string) {
         let request = this.openDB();
-        //@ts-ignore
-        request.onsuccess = (ev: IDBVersionChangeEvent) => {
+
+        request.onsuccess = (ev: Event) => {
             const target = ev.target as IDBOpenDBRequest;
             const db = target.result;
             const transaction = db.transaction([tablename], "readonly");
@@ -85,7 +89,7 @@ class InDB {
 
     //Public methods
     table(tables: T_TableSchema[]) {
-        this.#request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
+        this.#request.onupgradeneeded = (event: Event) => {
             const target = event.target as IDBOpenDBRequest;
             const db = target.result;
             for (let table of tables) {
@@ -98,7 +102,7 @@ class InDB {
                     objStore.createIndex(
                         column.name,
                         column.name,
-                        column.options
+                        column?.options
                     );
                 });
             }
@@ -111,85 +115,57 @@ class InDB {
     }
 
     async get(tablename: string, id: number) {
-        let res = () => this.#doGet(tablename, id) as IDBRequest;
+        let res = () => this.#doGet(tablename, id);
         return await this.#waitData(res);
     }
 
-    async getWhere(tablename: string, where: object) {
-        let allData = (await this.all(tablename)) as object[];
-        let data = [] as object[];
-
-        allData.forEach((o) => {
-            let bools = [] as boolean[];
-            for (let wKey in where) {
-                if (Object.keys(o).includes(wKey)) {
-                    bools.push(o[wKey] == where[wKey]);
-                }
-            }
-            if (bools.every(Boolean) && bools.length > 0) {
-                data.push(o);
-            }
-        });
+    async getWhere(tablename: string, pred: (x: any) => boolean) {
+        let allData = await this.all(tablename);
+        let data = allData.filter(pred);
         return data;
     }
 
     async delete(tablename: string, id: number) {
         let request = this.openDB();
-        //@ts-ignore
-        request.onsuccess = (ev: IDBVersionChangeEvent) => {
+
+        request.onsuccess = (ev: Event) => {
             const target = ev.target as IDBOpenDBRequest;
             const db = target.result;
             const transaction = db.transaction([tablename], "readwrite");
             transaction.objectStore(tablename).delete(id);
         };
-        return null;
     }
 
-    async add(tablename: string, data: object) {
+    async add(tablename: string, data: T_DataInput) {
         let request = this.openDB();
-        let result: IDBTransaction | undefined;
-        //@ts-ignore
-        request.onsuccess = (ev: IDBVersionChangeEvent) => {
+        let result: IDBTransaction | null;
+
+        request.onsuccess = (ev: Event) => {
             const target = ev.target as IDBOpenDBRequest;
             const db = target.result;
             const transaction = db.transaction(tablename, "readwrite");
             const objStore = transaction.objectStore(tablename);
             const req = objStore.add(data);
-            //@ts-ignore
+
             result = req.transaction;
         };
-        let counter = 0;
-
-        while (true) {
-            if (result || counter >= 10) {
-                return result?.error;
-            }
-            await sleep(100);
-            counter++;
-        }
+        return this.#waitData(() => result?.error);
     }
 
-    async update(tablename: string, data: object) {
+    async update(tablename: string, data: T_DataInput) {
         let request = this.openDB();
-        let result: IDBTransaction | undefined;
-        //@ts-ignore
-        request.onsuccess = (ev: IDBVersionChangeEvent) => {
+        let result: IDBTransaction | null;
+
+        request.onsuccess = (ev: Event) => {
             const target = ev.target as IDBOpenDBRequest;
             const db = target.result;
             const transaction = db.transaction([tablename], "readwrite");
             const objStore = transaction.objectStore(tablename).put(data);
-            //@ts-ignore
+
             result = objStore.transaction;
         };
 
-        let counter = 0;
-        while (true) {
-            if (result || counter >= 10) {
-                return result?.error;
-            }
-            await sleep(100);
-            counter++;
-        }
+        return this.#waitData(() => result?.error);
     }
 }
 
@@ -209,6 +185,15 @@ class InQ {
         return new InDB(this.dbname, this.version);
     }
 
+    async fromAllTable() {
+        let res = {} as Record<string, T_DataOutput[]>;
+        this.tabSchemas.forEach(
+            async (t) => (res[t.tablename] = await this.all(t.tablename))
+        );
+
+        return res;
+    }
+
     async all(tablename: string) {
         return await this.#db().all(tablename);
     }
@@ -217,11 +202,11 @@ class InQ {
         return await this.#db().get(tablename, id);
     }
 
-    async getWhere(tablename: string, condition: object) {
+    async getWhere(tablename: string, condition: (x: T_DataInput) => boolean) {
         return await this.#db().getWhere(tablename, condition);
     }
 
-    async add(tablename: string, data: object) {
+    async add(tablename: string, data: T_DataInput) {
         let tabSchema = this.tabSchemas.find((t) => t.tablename == tablename);
         const columnNames = tabSchema?.columns.map((c) => c.name);
         for (let dKey in data) {
@@ -234,17 +219,28 @@ class InQ {
         return await this.#db().add(tablename, data);
     }
 
-    async update(tablename: string, data: object) {
+    async update(tablename: string, data: T_DataInput) {
         return await this.#db().update(tablename, data);
     }
 
     async delete(tablename: string, id: number) {
         return await this.#db().delete(tablename, id);
     }
+
+    async deleteWhere(tablename: string, pred: (x: T_DataInput) => boolean) {
+        const founds = await this.getWhere(tablename, pred);
+        const deleteds = await Promise.all(
+            founds.map((x) => {
+                this.delete(tablename, x.id);
+                return x;
+            })
+        );
+        return deleteds;
+    }
 }
 
 //Exemple of usage
-(async () => {
+/* (async () => {
     let myDB = new InQ("mydb", [
         {
             tablename: "tab1",
@@ -273,12 +269,14 @@ class InQ {
     await myDB.add("tab1", { name: "moi", age: 22 });
     await myDB.add("tab1", { name: "elle", age: 39 });
     await myDB.add("tab2", { address: "bonga 47", mail: "h@k" });
+    await myDB.add("tab2", { address: "bonga 48", mail: "jj@k" });
     await myDB.add("tab2", { address: "itoumbi 70", mail: "t@n" });
     await myDB.add("tab2", { address: "itoumbi 72", mail: "t@n" });
 
-    // await myDB.delete("tab1", 2);
-    let [res1, res2] = await Promise.all([
-        myDB.getWhere("tab2", { mail: "t@n" }),
-        myDB.all("tab1"),
-    ]);
+    (await myDB.all("tab2")).forEach((x) => {
+        console.log(x);
+        myDB.delete("tab2", x.id);
+    });
 })();
+ */
+
