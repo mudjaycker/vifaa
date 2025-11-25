@@ -83,8 +83,8 @@ def purge_css(css_path, used_classes, output_path="purged.css"):
 # 4. Exemple d'utilisation
 # --------------------------
 if __name__ == "__main__":
-    project_folder = "mon_projet"      # dossier contenant HTML/JS/Vue/etc
-    css_file = "bulma.css"             # fichier à nettoyer
+    project_folder = "./test"      # dossier contenant HTML/JS/Vue/etc
+    css_file = "./test/style.css"             # fichier à nettoyer
 
     used = extract_all_used_classes(project_folder)
-    purge_css(css_file, used, "bulma_purged.css")
+    purge_css(css_file, used, "purged.css")
