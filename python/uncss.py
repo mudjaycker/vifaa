@@ -1,14 +1,14 @@
 import os
 import re
 
-# --------------------------
-# 1. Extraire les classes HTML/JS/Vue/Svelte
-# --------------------------
+# ---------------------------------------------------------------------------- #
+#                  1. Extraire les classes HTML/JS/Vue/Svelte                  #
+# ---------------------------------------------------------------------------- #
 def extract_used_classes_from_file(path):
     with open(path, "r", encoding="utf-8", errors="ignore") as f:
         content = f.read()
 
-    # capture toutes les classes dans les attributs class="..."
+    # --------- capture toutes les classes dans les attributs class="..." -------- #
     pattern_html = r'class\s*=\s*"([^"]+)"'
     matches = re.findall(pattern_html, content)
 
@@ -17,7 +17,7 @@ def extract_used_classes_from_file(path):
         for cls in match.split():
             used.add(cls.strip())
 
-    # capture les classes dans les fichiers JS/Vue/Svelte (ex: class: "box")
+    # -- capture les classes dans les fichiers JS/Vue/Svelte (ex: class: "box") -- #
     pattern_js = r'class[:=]\s*"([^"]+)"'
     matches2 = re.findall(pattern_js, content)
 
@@ -39,18 +39,18 @@ def extract_all_used_classes(directory):
 
 
 
-# --------------------------
-# 2. Extraire les classes définies dans le CSS
-# --------------------------
+# ---------------------------------------------------------------------------- #
+#                 2. Extraire les classes définies dans le CSS                 #
+# ---------------------------------------------------------------------------- #
 def extract_css_class_selectors(css_content):
     # Ex: .box, .menu-item, .title:hover
     pattern = r'\.([a-zA-Z_][a-zA-Z0-9\-_]*)'
     return set(re.findall(pattern, css_content))
 
 
-# --------------------------
-# 3. Garder uniquement les règles CSS utilisées
-# --------------------------
+# ---------------------------------------------------------------------------- #
+#                 3. Garder uniquement les règles CSS utilisées                #
+# ---------------------------------------------------------------------------- #
 def purge_css(css_path, used_classes, output_path="purged.css"):
     with open(css_path, "r", encoding="utf-8", errors="ignore") as f:
         css = f.read()
@@ -76,15 +76,3 @@ def purge_css(css_path, used_classes, output_path="purged.css"):
 
     print(f"✔ CSS purgé généré : {output_path}")
     print(f"✔ Classes utilisées dans le projet : {len(used_classes)}")
-
-
-
-# --------------------------
-# 4. Exemple d'utilisation
-# --------------------------
-if __name__ == "__main__":
-    project_folder = "./test"      # dossier contenant HTML/JS/Vue/etc
-    css_file = "./test/style.css"             # fichier à nettoyer
-
-    used = extract_all_used_classes(project_folder)
-    purge_css(css_file, used, "purged.css")
